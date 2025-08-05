@@ -1,0 +1,228 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+body {
+  position: relative;
+}
+
+/* 背景↓ */
+/* 横屏 */
+@media all and (orientation: landscape) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../eee/picture/校门口.webp');
+    background-repeat: no-repeat;
+    background-size: 100% auto ;
+    background-position: center;
+    z-index: -1; /* 确保在内容之下 */
+  }
+
+  #main {
+    background-color: rgba(255, 255, 255, 0.75); /* 半透明背景保证内容可读性 */
+  }
+}
+
+/* 竖屏 */
+@media all and (orientation: portrait) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100vw;
+    height: 100vh;
+    background-image: url('../eee/picture/校门口.webp');
+    background-repeat: no-repeat;
+    background-size:auto 100%;
+    background-position: center ;
+    z-index: -1; /* 确保在内容之下 */
+  }
+  #main {
+    background-color: rgba(255, 255, 255, 0.75); /* 半透明背景保证内容可读性 */
+  }
+}
+/* 背景↑ */
+
+#main {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+.top-bar {
+  height: 60px;
+  background-color: #969696;
+  display: flex;
+  justify-content: space-between;  /* 确保三个元素均匀分布 */
+  align-items: center;
+  padding: 0 20px;
+}
+
+.menu-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 5h30v2H0zm0 10h30v2H0zm0 10h30v2H0z" fill="white"/></svg>');
+  cursor: pointer;
+}
+
+.title {
+  color: white;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+}
+/* 横屏 */
+@media all and (orientation: landscape) {
+  .menu {
+    width: 40%;
+    height: 100vh;
+    background-color: #bbbbbb;
+    position: fixed;
+    left: -100%;
+    top: 0;
+    transition: left 0.3s ease;
+    padding: 20px;
+    z-index: 1;
+  }
+}
+/* 竖屏 */
+@media all and (orientation: portrait) {
+  .menu {
+    width: 75%;
+    height: 100vh;
+    background-color: #bbbbbb;
+    position: fixed;
+    left: -100%;
+    top: 0;
+    transition: left 0.3s ease;
+    padding: 20px;
+    z-index: 1;
+  }
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;  /* 标题和关闭按钮分居两侧 */
+  align-items: center;
+  padding: 0 10px;
+  margin-bottom: 20px;
+}
+
+.menu-title {
+  position: absolute;  /* 绝对定位实现真正居中 */
+  left: 50%;
+  transform: translateX(-50%);
+  color: gray;
+  font-weight: bold;
+}
+
+.menu-close-btn {
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: auto;  /* 关闭按钮靠右 */
+}
+
+.menu.active {
+  left: 0;
+}
+
+.menu-item {
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.subpage-content {
+  display: none;
+  padding: 20px;
+}
+
+.subpage-content.active {
+  display: block;
+}
+
+.back-btn {
+  cursor: pointer;
+  color: white;
+}
+
+img {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 80%;
+  height: auto;
+}
+
+/* 视频
+默认样式（竖屏） */
+.video-container {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.video-landscape {
+    display: none;
+}
+
+/* 横屏样式 */
+@media screen and (orientation: landscape) {
+    .video-portrait {
+        display: none;
+    }
+    
+    .video-landscape {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .video-landscape .video-item {
+        flex: 1 1 45%;
+        min-width: 300px;
+    }
+}
+
+/* 音频
+默认样式（竖屏） */
+.media-container {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.media-landscape {
+    display: none;
+}
+
+/* 横屏样式 */
+@media screen and (orientation: landscape) {
+    .media-portrait {
+        display: none;
+    }
+    
+    .media-landscape {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .media-landscape .media-item {
+        flex: 1 1 1 45%;
+        min-width: 300px;
+    }
+}
