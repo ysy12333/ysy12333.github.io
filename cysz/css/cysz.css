@@ -63,6 +63,7 @@ body {
 }
 
 .top-bar {
+  border-radius: 10px;
   height: 60px;
   background-color: #969696;
   display: flex;
@@ -225,4 +226,31 @@ img {
         flex: 1 1 1 45%;
         min-width: 300px;
     }
+}
+
+/* 校徽，竖屏 */
+.xiaohui-mo {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.xiaohui-heng {
+  display: none;
+}
+
+@media screen and (orientation: landscape) {
+  .xiaohui-mo {
+  display:none;
+  }
+
+  .xiaohui-heng {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  }
+  
+  .xiaohui-heng .xiaohui-heng-zi {
+    flex: 1 1 1 45%;
+    min-width: 300px;
+  }
 }
