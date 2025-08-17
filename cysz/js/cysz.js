@@ -53,7 +53,7 @@ function showPage(page) {
   backBtn.style.display = 'block';
       
   // 更新标题
-  document.title = page === 'uniform' ? 'MC版本的朝阳市第四中学校服' : 
+  // document.title = page === 'uniform' ? 'MC版本的朝阳市第四中学校服' : 
                    page === 'teacher' ? '老师介绍' : 
                    page === 'school_badge' ? '校徽' : 
                    page === 'exercise' ? '广播体操视频及音频' : '';
