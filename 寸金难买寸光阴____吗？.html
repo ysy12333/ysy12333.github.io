@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寸金难买寸光阴    吗？</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .game-container {
+            width: 800px;
+            height: 600px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 50px;
+            margin-bottom: 80px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+        
+        .button {
+            width: 300px;
+            height: 60px;
+            border: 2px solid #000;
+            border-radius: 12px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        #get-gold-button {
+            background-color: rgb(100, 200, 100);
+        }
+        
+        #get-gold-button:hover {
+            background-color: rgb(150, 255, 150);
+        }
+        
+        #buy-time-button {
+            background-color: rgb(100, 200, 100);
+        }
+        
+        #buy-time-button:hover {
+            background-color: rgb(150, 255, 150);
+        }
+        
+        .stats-container {
+            text-align: center;
+            font-size: 36px;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        .message {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            animation: fadeInOut 2s ease-in-out;
+        }
+        
+        .success-message {
+            color: #009900;
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        
+        .failure-message {
+            color: #990000;
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .counter-animation {
+            animation: counterBounce 0.5s ease-in-out;
+        }
+        
+        @keyframes counterBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="title">寸金难买寸光阴    吗？</div>
+        
+        <div class="buttons-container">
+            <div class="button" id="get-gold-button">点击获取寸金</div>
+            <div class="button" id="buy-time-button">点击购买寸光阴</div>
+        </div>
+        
+        <div class="stats-container">
+            <div id="gold-count">寸金拥有数: <span id="gold-value">0</span></div>
+            <div id="time-count">寸光阴拥有数: <span id="time-value">0</span></div>
+        </div>
+        
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 游戏状态
+        let gold = 0;
+        let time = 0;
+        let messageTimer = null;
+        
+        // 获取DOM元素
+        const getGoldButton = document.getElementById('get-gold-button');
+        const buyTimeButton = document.getElementById('buy-time-button');
+        const goldValue = document.getElementById('gold-value');
+        const timeValue = document.getElementById('time-value');
+        const messageElement = document.getElementById('message');
+        
+        // 获取寸金按钮点击事件
+        getGoldButton.addEventListener('click', function() {
+            gold++;
+            updateDisplay();
+            animateCounter(goldValue);
+            console.log("count+1");
+        });
+        
+        // 购买寸光阴按钮点击事件
+        buyTimeButton.addEventListener('click', function() {
+            if (gold > 0) {
+                if (Math.random() < 0.1) { // 10%的成功率
+                    time++;
+                    gold--;
+                    showMessage("寸光阴购买成功", "success-message");
+                    console.log("guangyin+1,count-1");
+                } else {
+                    gold--;
+                    showMessage("寸光阴购买失败", "failure-message");
+                    console.log("count-1");
+                }
+                updateDisplay();
+                animateCounter(timeValue);
+            }
+        });
+        
+        // 更新显示
+        function updateDisplay() {
+            goldValue.textContent = gold;
+            timeValue.textContent = time;
+        }
+        
+        // 显示消息
+        function showMessage(text, className) {
+            // 清除之前的消息和计时器
+            if (messageTimer) {
+                clearTimeout(messageTimer);
+                messageElement.style.display = 'none';
+            }
+            
+            // 设置新消息
+            messageElement.textContent = text;
+            messageElement.className = 'message ' + className;
+            messageElement.style.display = 'block';
+            
+            // 2秒后隐藏消息
+            messageTimer = setTimeout(() => {
+                messageElement.style.display = 'none';
+                messageTimer = null;
+            }, 2000);
+        }
+        
+        // 计数器动画
+        function animateCounter(element) {
+            element.classList.add('counter-animation');
+            setTimeout(() => {
+                element.classList.remove('counter-animation');
+            }, 500);
+        }
+        
+        // 按钮悬停效果
+        const buttons = document.querySelectorAll('.button');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+            
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(0)';
+            });
+            
+            button.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+        });
+        
+        // 初始化显示
+        updateDisplay();
+    </script>
+</body>
+</html>
