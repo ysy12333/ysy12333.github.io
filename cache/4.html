@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机答案生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #generateBtn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+        
+        #generateBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        #resetBtn {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        #downloadBtn {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+        
+        #downloadBtn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #downloadBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .result-item {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result-number {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 600;
+        }
+        
+        .result-answer {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 500;
+            animation: shake 0.5s;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>随机答案生成器</h1>
+        <p class="description">输入您需要的答案数量，系统将为您生成随机答案（A、B、C、D）</p>
+        
+        <div class="input-group">
+            <label for="answerCount">答案数量：</label>
+            <input type="text" id="answerCount" placeholder="请输入整数（例如：5）">
+        </div>
+        
+        <div class="buttons">
+            <button id="generateBtn">生成答案</button>
+            <button id="resetBtn">重置</button>
+        </div>
+        
+        <button id="downloadBtn">下载答案</button>
+        
+        <div id="errorMessage" class="error hidden">请输入有效的整数！</div>
+        
+        <div class="results" id="resultsContainer">
+            <!-- 答案将在这里显示 -->
+        </div>
+        
+        <div class="footer">
+            <p>按ESC键可重置生成器</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const answerCountInput = document.getElementById('answerCount');
+            const generateBtn = document.getElementById('generateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            let answers = []; // 存储生成的答案
+            
+            // 生成答案按钮点击事件
+            generateBtn.addEventListener('click', function() {
+                generateAnswers();
+            });
+            
+            // 重置按钮点击事件
+            resetBtn.addEventListener('click', function() {
+                answerCountInput.value = '';
+                resultsContainer.innerHTML = '';
+                errorMessage.classList.add('hidden');
+                downloadBtn.classList.remove('visible');
+                answers = [];
+            });
+            
+            // 下载按钮点击事件
+            downloadBtn.addEventListener('click', function() {
+                downloadAnswers();
+            });
+            
+            // 按Enter键生成答案
+            answerCountInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    generateAnswers();
+                }
+            });
+            
+            // 按ESC键重置
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    answerCountInput.value = '';
+                    resultsContainer.innerHTML = '';
+                    errorMessage.classList.add('hidden');
+                    downloadBtn.classList.remove('visible');
+                    answers = [];
+                }
+            });
+            
+            // 生成答案函数
+            function generateAnswers() {
+                const countStr = answerCountInput.value.trim();
+                
+                // 检查输入是否为空
+                if (countStr === '') {
+                    showError('请输入答案数量！');
+                    return;
+                }
+                
+                // 检查是否为有效整数
+                const count = parseInt(countStr);
+                if (isNaN(count) || count <= 0) {
+                    showError('请输入有效的正整数！');
+                    return;
+                }
+                
+                // 清空错误消息和之前的结果
+                errorMessage.classList.add('hidden');
+                resultsContainer.innerHTML = '';
+                answers = [];
+                downloadBtn.classList.remove('visible');
+                
+                // 生成答案
+                generateAnswersWithDelay(count, 0);
+            }
+            
+            // 带延迟生成答案
+            function generateAnswersWithDelay(count, index) {
+                if (index >= count) {
+                    // 所有答案生成完成后等待2秒再显示下载按钮
+                    setTimeout(() => {
+                        downloadBtn.classList.add('visible');
+                    }, 2000);
+                    return;
+                }
+                
+                setTimeout(() => {
+                    const answer = generateRandomAnswer();
+                    answers.push(answer); // 存储答案
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+                    resultItem.innerHTML = `
+                        <div class="result-number">${index + 1}</div>
+                        <div class="result-answer">${answer}</div>
+                    `;
+                    resultsContainer.appendChild(resultItem);
+                    
+                    // 滚动到最新结果
+                    resultItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // 生成下一个答案
+                    generateAnswersWithDelay(count, index + 1);
+                }, 500);
+            }
+            
+            // 生成随机答案（A、B、C、D）
+            function generateRandomAnswer() {
+                const randomNum = Math.floor(Math.random() * 4) + 1;
+                switch(randomNum) {
+                    case 1: return 'A';
+                    case 2: return 'B';
+                    case 3: return 'C';
+                    case 4: return 'D';
+                    default: return '程序错误';
+                }
+            }
+            
+            // 下载答案函数
+            function downloadAnswers() {
+                if (answers.length === 0) {
+                    showError('没有可下载的答案！');
+                    return;
+                }
+                
+                // 创建CSV内容
+                let csvContent = "序号,答案\n";
+                answers.forEach((answer, index) => {
+                    csvContent += `${index + 1},${answer}\n`;
+                });
+                
+                // 创建Blob对象
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                
+                // 创建下载链接
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "随机答案.csv");
+                link.style.visibility = 'hidden';
+                
+                // 触发下载
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            // 显示错误消息
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
