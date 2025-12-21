@@ -8,7 +8,10 @@ while True:
     try:
         a=int(a2)
     except:
-        print("请输入整数")
+        print("请输入正整数")
+    
+    if a <= 0:
+        print("请输入正整数")
 
     for i in range(a):
         c2 = random.randint(1, 4)
