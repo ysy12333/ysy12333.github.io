@@ -36,11 +36,119 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .header h1 {
             font-size: 1.5rem;
             font-weight: 600;
+            margin-right: auto;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+            max-width: 100%;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            background: white;
+            box-shadow: 0 0 0 2px rgba(76, 123, 236, 0.3);
+        }
+        
+        .search-box::placeholder {
+            color: #888;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            pointer-events: none;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-top: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .search-result-item:hover {
+            background: #f5f7fa;
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-icon {
+            width: 30px;
+            height: 30px;
+            background: #4b7bec;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .result-details {
+            flex: 1;
+        }
+        
+        .result-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+            color: #000;
+        }
+        
+        .result-desc {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
         }
         
         .main-content {
@@ -113,20 +221,28 @@
             border-top: 1px solid #e9ecef;
         }
         
+        .highlight {
+            background-color: #fffacd;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
                 text-align: center;
                 padding: 15px;
             }
             
             .header h1 {
                 font-size: 1.3rem;
+                margin-right: 0;
+                width: 100%;
             }
             
-            .current-path {
-                margin: 0;
+            .search-container {
+                width: 100%;
             }
             
             .main-content {
@@ -143,7 +259,7 @@
 
             .file_name_s {
                 font-size: 12px;
-                color: grey
+                color: grey;
             }
         }
     </style>
@@ -152,12 +268,20 @@
     <div class="file-manager">
         <div class="header">
             <h1>ysy12333的主页</h1>
-            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="搜索项目...">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
         </div>
         
         <div class="main-content">
-            <div class="file-list">
-                <a href="/cysz/" class="file-item">
+            <div class="file-list" id="originalList1">
+                <a href="/cysz/" class="file-item" data-name="朝阳市第四中学官网" data-desc="自制学校官网">
                     <div class="file-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
@@ -171,8 +295,8 @@
                 </a>
             </div>
             <br>
-            <div class="file-list">
-                <a href="/cache/1.html" class="file-item">
+            <div class="file-list" id="originalList2">
+                <a href="/cache/1.html" class="file-item" data-name="时间计数器" data-desc="Python转网页(由AI转换，生成)">
                     <div class="file-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
@@ -184,10 +308,7 @@
                         <div class="file_name_s">Python转网页(由AI转换，生成)</div>
                     </div>
                 </a>
-            </div>
-            <br>
-            <div class="file-list">
-                <a href="/cache/2.html" class="file-item">
+                <a href="/cache/2.html" class="file-item" data-name="寸金难买寸光阴 吗？" data-desc="Python转网页(由AI转换，生成)">
                     <div class="file-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
@@ -199,10 +320,7 @@
                         <div class="file_name_s">Python转网页(由AI转换，生成)</div>
                     </div>
                 </a>
-            </div>
-            <br>
-            <div class="file-list">
-                <a href="/cache/3.html" class="file-item">
+                <a href="/cache/3.html" class="file-item" data-name="成绩及格判断" data-desc="Python转网页(由AI转换，生成)">
                     <div class="file-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
@@ -214,10 +332,7 @@
                         <div class="file_name_s">Python转网页(由AI转换，生成)</div>
                     </div>
                 </a>
-            </div>
-            <br>
-            <div class="file-list">
-                <a href="/cache/4.html" class="file-item">
+                <a href="/cache/4.html" class="file-item" data-name="随机答案生成" data-desc="Python转网页(由AI转换，生成)">
                     <div class="file-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
@@ -236,5 +351,110 @@
             <p>© 2025 ysy12333的导航界面</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBox = document.querySelector('.search-box');
+            const searchResults = document.getElementById('searchResults');
+            const fileItems = document.querySelectorAll('.file-item');
+            
+            // 收集所有项目数据
+            const projects = Array.from(fileItems).map(item => ({
+                element: item,
+                name: item.getAttribute('data-name') || item.querySelector('.file-name').textContent,
+                desc: item.getAttribute('data-desc') || item.querySelector('.file_name_s').textContent,
+                href: item.href
+            }));
+            
+            // 高亮显示关键词
+            function highlightText(text, searchTerm) {
+                if (!searchTerm.trim()) return text;
+                
+                const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                return text.replace(regex, '<span class="highlight">$1</span>');
+            }
+            
+            // 执行搜索
+            function performSearch(searchTerm) {
+                if (!searchTerm.trim()) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                const filteredProjects = projects.filter(project => {
+                    const nameMatch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
+                    const descMatch = project.desc.toLowerCase().includes(searchTerm.toLowerCase());
+                    return nameMatch || descMatch;
+                });
+                
+                // 更新搜索结果下拉框
+                if (filteredProjects.length > 0) {
+                    let resultsHTML = '';
+                    filteredProjects.forEach(project => {
+                        const highlightedName = highlightText(project.name, searchTerm);
+                        const highlightedDesc = highlightText(project.desc, searchTerm);
+                        
+                        resultsHTML += `
+                            <a href="${project.href}" class="search-result-item">
+                                <div class="result-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                    </svg>
+                                </div>
+                                <div class="result-details">
+                                    <div class="result-name">${highlightedName}</div>
+                                    <div class="result-desc">${highlightedDesc}</div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    
+                    searchResults.innerHTML = resultsHTML;
+                    searchResults.style.display = 'block';
+                } else {
+                    searchResults.innerHTML = '<div class="no-results">未找到匹配的项目</div>';
+                    searchResults.style.display = 'block';
+                }
+            }
+            
+            // 搜索输入事件
+            searchBox.addEventListener('input', function() {
+                performSearch(this.value);
+            });
+            
+            // 搜索框焦点事件
+            searchBox.addEventListener('focus', function() {
+                if (this.value.trim()) {
+                    searchResults.style.display = 'block';
+                }
+            });
+            
+            // 点击页面其他地方关闭搜索结果
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.search-container')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            // 键盘事件支持
+            searchBox.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    searchResults.style.display = 'none';
+                    this.blur();
+                }
+                
+                if (event.key === 'Enter' && this.value.trim()) {
+                    const firstResult = searchResults.querySelector('.search-result-item');
+                    if (firstResult) {
+                        firstResult.click();
+                    }
+                }
+            });
+            
+            // 初始隐藏搜索结果
+            searchResults.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
