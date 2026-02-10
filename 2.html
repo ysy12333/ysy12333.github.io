@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color:rgb(20, 20, 20);
+        }
+        /* 添加进度条容器样式 */
+        .bar1 {
+            border: 2px solid rgb(46, 46, 46);
+            border-radius: 10px;
+            width: 40vw;
+            height: 10vh;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 5px; /* 与按钮的间距 */
+        }
+        /* 进度条本身 */
+        .progress-bar1 {
+            height: 100%;
+            width: 0%; /* 初始为0%，通过JS动态修改 */
+            background: linear-gradient(45deg, #4a90e2, #63d3ff);
+            transition: width 0.3s ease; /* 平滑过渡效果 */
+        }
+        .button1 {
+            /* border-width: 2px;
+            border-style: solid;
+            border-color: rgb(46, 46, 46);
+            border-radius: 10px; */
+            width: 40vw;
+            background: linear-gradient(45deg, #000000, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color:transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height:10vh;
+            font-weight: 1000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .reset {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="bar1" class="bar1">
+            <div id="progress-bar1" class="progress-bar1"></div>
+            <div id="button1" class="button1">0级:0</div>
+        </div>
+    </div>
+    <div>
+        <button id="reset" class="reset">一键回到解放前</button>
+    </div>
+
+
+
+    <script>
+    const progress_bar1 = document.getElementById("progress-bar1");
+    const max_number1 = 100;
+
+    function update_progress_bar1(count) {
+        const yushu1 = count % max_number1;
+        const size1 = Math.min((yushu1 / max_number1) *100, 100);
+        progress_bar1.style.width = size1 + "%";
+    }
+    //计算等级
+    function suan_level1(count) {
+        return Math.floor(count / max_number1);
+    }
+
+    //读写cookie 开始
+    function getCookie(name) {
+        const cookies = document.cookie.split(';');
+        for(let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if(cookie.startsWith(name + '=')) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null;
+    }
+
+    //今后
+    const button1 = document.getElementById("button1");
+    let button1_count_value = getCookie('button1_count');
+    let button1_count;
+
+    //初次
+    if(button1_count_value === null) {
+        button1_count = 0
+        const a = new Date();
+        a.setFullYear(9999);
+        document.cookie = "button1_count=0; expires=" + a.toUTCString() + "; path=/game1/";
+    } else {
+        button1_count = parseInt(button1_count_value) || 0;
+    }
+    //读写cookie 结束
+
+    update_progress_bar1(button1_count);
+    const update_level1 = suan_level1(button1_count);
+    button1.textContent = `${update_level1}级:${button1_count}`;
+    button1.addEventListener('click', function() {
+        button1_count += 1;
+        const update_level1 = suan_level1(button1_count);
+        this.textContent = `${update_level1}级:${button1_count}`;
+
+        update_progress_bar1(button1_count);
+        //更新cookie
+        const b = new Date();
+        b.setFullYear(9999);
+        document.cookie = "button1_count=" + button1_count + "; expires=" + b.toDateString() + "; path=/game1/";
+    });
+
+    //重置区
+    const reset = document.getElementById("reset")
+    function resetAll() {
+        // 确认是否要重置
+        if (confirm("确定要回到解放前吗😭😭？")) {
+            // 删除cookie - 设置过期时间为过去的时间
+            const pastDate = new Date();
+            pastDate.setFullYear(1970);
+            
+            // 删除所有相关的cookie
+            document.cookie = "button1_count=; expires=" + pastDate.toUTCString() + "; path=/game1/";
+            
+            // 重置计数器和显示
+            button1_count = 0;
+            update_progress_bar1(button1_count);
+            const update_level1 = suan_level1(button1_count);
+            button1.textContent = `${update_level1}级:${button1_count}`;
+        }
+    }
+    reset.addEventListener('click', resetAll);
+    </script>
