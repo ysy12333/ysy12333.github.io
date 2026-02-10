@@ -26,10 +26,6 @@
             transition: width 0.3s ease; /* 平滑过渡效果 */
         }
         .button1 {
-            /* border-width: 2px;
-            border-style: solid;
-            border-color: rgb(46, 46, 46);
-            border-radius: 10px; */
             width: 40vw;
             background: linear-gradient(45deg, #000000, #ffffff);
             -webkit-background-clip: text;
@@ -40,7 +36,7 @@
             align-items: center;
             justify-content: center;
             height:10vh;
-            font-weight: 1000;
+            font-weight: 600;
             position: absolute;
             top: 0;
             left: 0;
@@ -51,6 +47,13 @@
             left: 0;
             bottom: 0;
         }
+        .tips {
+            color:#ffffff;
+            font-weight: 400;
+            position: fixed;
+            left: 0;
+            bottom: 50px;
+        }
     </style>
 </head>
 <body>
@@ -59,6 +62,9 @@
             <div id="progress-bar1" class="progress-bar1"></div>
             <div id="button1" class="button1">0级:0</div>
         </div>
+    </div>
+    <div class="tips">
+        <p>提示：<br>1.点击左上角按钮试试。<br>2.危险，不要点击左下角按钮！除非你要试试~<br>3.此版本为beta测试版，可能有一些未知bug。</p>
     </div>
     <div>
         <button id="reset" class="reset">一键回到解放前</button>
@@ -102,7 +108,7 @@
         button1_count = 0
         const a = new Date();
         a.setFullYear(9999);
-        document.cookie = "button1_count=0; expires=" + a.toUTCString() + "; path=/game1/";
+        document.cookie = "button1_count=0; expires=" + a.toUTCString() + "; path=/game1/; SameSite=None; Secure";
     } else {
         button1_count = parseInt(button1_count_value) || 0;
     }
@@ -120,7 +126,7 @@
         //更新cookie
         const b = new Date();
         b.setFullYear(9999);
-        document.cookie = "button1_count=" + button1_count + "; expires=" + b.toDateString() + "; path=/game1/";
+        document.cookie = "button1_count=" + button1_count + "; expires=" + b.toUTCString() + "; path=/game1/; SameSite=None; Secure";
     });
 
     //重置区
@@ -133,7 +139,7 @@
             pastDate.setFullYear(1970);
             
             // 删除所有相关的cookie
-            document.cookie = "button1_count=; expires=" + pastDate.toUTCString() + "; path=/game1/";
+            document.cookie = "button1_count=; expires=" + pastDate.toUTCString() + "; path=/game1/; SameSite=None; Secure";
             
             // 重置计数器和显示
             button1_count = 0;
@@ -143,5 +149,4 @@
         }
     }
     reset.addEventListener('click', resetAll);
-
     </script>
