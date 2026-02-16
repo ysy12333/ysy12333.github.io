@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当前时间</title>
+    <style>
+        html, body {
+            background-color: black;
+        }
+
+        :fullscreen,
+        :-webkit-full-screen,
+        :-ms-fullscreen,
+        :-moz-full-screen {
+            background-color: black;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .time {
+            font-size: 25vw;
+            color: white;
+            text-align: center;
+        }
+
+        @keyframes shine {
+            0% {background-position: 200% center;}
+            100% {background-position: 0% center;}
+        }
+
+        .a {
+            font-size: 5vw;
+            color: white;
+            text-align: center;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .aaa {
+            display: flex;
+            gap: 25%;
+            justify-content: center;
+
+            background: linear-gradient(90deg, #ff0000, #ff9600, #bebe00, #00ff00, #00bfbf, #0081ff, #7800ff, #ff0000);
+            background-size: 200%, auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 10s linear infinite reverse;
+        }
+
+        .button {
+            background-color: black;
+            color: dimgray;
+            border: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="time" class="time">00:00:00</div>
+    <div class="aaa">
+       <div id="ddate" class="a">0000年00月00日</div>
+        <div id="week" class="a">星期X</div>
+    </div>
+     
+    <button id="button" class="button">全屏</button>
+    <script>
+        function update_time() {
+            const time = document.getElementById("time");
+            const date1 = new Date();
+            time.textContent = date1.toLocaleTimeString();
+        };
+        update_time();
+        setInterval(update_time, 100);
+
+
+        function update_ddate() {
+            const ddate = document.getElementById("ddate");
+            const date3 = new Date();
+            let c = date3.getFullYear();
+            let d = date3.getMonth() + 1;
+            let e = date3.getDate();
+            
+            ddate.textContent = `${c}年${d}月${e}日`;
+        }
+        update_ddate();
+        setInterval(update_ddate, 1000);
+
+
+        function update_week() {
+            const week = document.getElementById("week");
+            const date2 = new Date();
+            let a = date2.getDay();
+            let b;
+            if (a === 0) {
+                b = "日";
+            } else if (a === 1) {
+                b = "一";
+            } else if (a === 2) {
+                b = "二";
+            } else if (a === 3) {
+                b = "三";
+            } else if (a === 4) {
+                b = "四";
+            } else if (a === 5) {
+                b = "五";
+            } else if (a === 6) {
+                b = "六";
+            };
+            week.textContent = `星期${b}`;
+            
+        };
+        update_week();
+        setInterval(update_week, 1000);
+
+
+        const button = document.getElementById("button");
+        const body = document.body;
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                if (body.requestFullscreen) {
+                    body.requestFullscreen();
+                } else if (body.webkitRequestFullscreen) { 
+                    body.webkitRequestFullscreen();
+                } else if (body.mozRequestFullScreen) { 
+                    body.mozRequestFullScreen();
+                } else if (body.msRequestFullscreen) { 
+                    body.msRequestFullscreen();
+                }
+            } else {
+                
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            };
+        };
+        button.addEventListener('click', toggleFullscreen);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F11') {
+                e.preventDefault(); 
+                toggleFullscreen(); 
+            }
+        });
+
+        let timeout1;
+        function hidemouse() {
+            document.body.style.cursor = "none";
+        }
+        function showmouse() {
+            document.body.style.cursor = "auto";
+            clearTimeout(timeout1);
+            timeout1 = setTimeout(hidemouse, 3000);
+        }
+        document.addEventListener("mousemove", showmouse)
+        timeout1 = setTimeout(hidemouse, 3000);
+
+        let timeout2
+        const buttonn = document.getElementById("button")
+        function hidebutton() {
+            buttonn.style.opacity = "0";
+        }
+        function showbutton() {
+            buttonn.style.opacity = "1";
+            clearTimeout(timeout2);
+            timeout2 = setTimeout(hidebutton, 3000);
+        }
+        document.addEventListener("mousemove", showbutton)
+        timeout2 = setTimeout(hidebutton, 3000);
+    </script>
+</body>
+</html>
