@@ -7,6 +7,8 @@
     <style>
         html, body {
             background-color: black;
+            margin: 0;
+            padding: 0;
         }
 
         :fullscreen,
@@ -54,17 +56,28 @@
             color: dimgray;
             border: none;
             outline: none;
+            text-align: left;
+        }
+
+        .b {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <div id="time" class="time">00:00:00</div>
-    <div class="aaa">
-       <div id="ddate" class="a">0000年00月00日</div>
-        <div id="week" class="a">星期X</div>
-    </div>
-     
+    <div class="b">
+        <div id="time" class="time">00:00:00</div>
+        <div class="aaa">
+            <div id="ddate" class="a">0000年00月00日</div>
+            <div id="week" class="a">星期X</div>
+        </div>
     <button id="button" class="button">全屏</button>
+    </div>
+    
+        
     <script>
         function update_time() {
             const time = document.getElementById("time");
