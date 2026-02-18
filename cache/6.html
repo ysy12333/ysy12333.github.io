@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字秒表</title>
+    <style>
+        html, body{background-color: black;margin: 0;padding: 0} :fullscreen,:-webkit-full-screen,:-ms-fullscreen,:-moz-full-screen{background-color: black;margin: 0;min-height: 100vh} .button{background-color: black;color: dimgray;border: none;outline: none;text-align: left}.allbody{display: flex;flex-direction: column;justify-content: center;height: 100vh}
+        .time {
+            color:white;
+            font-size: 18vw;
+            text-align: center;
+        }
+
+        .start{
+            border: 5px;
+            font-size: 4vw;
+            background-color: black;
+            color:white;
+        }
+        .button2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="allbody">
+        <div id="time" class="time">00:00:00:00</div>
+        <div class="button2">
+            <button id="start" class="start">点击开始/结束计时</button>
+            <button id="reset" class="start">重置计时</button>
+        </div>
+        <br>
+        <button id="button" class="button">全屏</button>
+    </div>
+    
+        
+    <script>
+        const button=document.getElementById("button"); const body=document.body; function toggleFullscreen(){ if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){ if (body.requestFullscreen){ body.requestFullscreen()} else if (body.webkitRequestFullscreen){ body.webkitRequestFullscreen()} else if (body.mozRequestFullScreen){ body.mozRequestFullScreen()} else if (body.msRequestFullscreen){ body.msRequestFullscreen()}} else{ if (document.exitFullscreen){ document.exitFullscreen()} else if (document.webkitExitFullscreen){ document.webkitExitFullscreen()} else if (document.mozCancelFullScreen){ document.mozCancelFullScreen()} else if (document.msExitFullscreen){ document.msExitFullscreen()}}}; button.addEventListener('click', toggleFullscreen); document.addEventListener('keydown', function(e){ if (e.key==='F11'){ e.preventDefault(); toggleFullscreen();}}); let timeout1; function hidemouse(){ document.body.style.cursor="none";} function showmouse(){ document.body.style.cursor="auto"; clearTimeout(timeout1); timeout1=setTimeout(hidemouse, 3000);} document.addEventListener("mousemove", showmouse); timeout1=setTimeout(hidemouse, 3000); let timeout2; const buttonn=document.getElementById("button"); function hidebutton(){ buttonn.style.opacity="0";} function showbutton(){ buttonn.style.opacity="1"; clearTimeout(timeout2); timeout2=setTimeout(hidebutton, 3000);} document.addEventListener("mousemove", showbutton); timeout2=setTimeout(hidebutton, 3000);
+        const time = document.getElementById("time");
+        const start = document.getElementById("start");
+        let ms = 0;
+        let sounds = 0;
+        let minutes = 0;
+        let hours = 0;
+        let running = false;
+        let a = null;
+        let starttime = null;
+        let pausedtime = 0;
+        function update() {
+            time.textContent = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${sounds.toString().padStart(2,'0')}:${ms.toString().padStart(2,'0')}`;
+        }
+        function timing() {
+            if (!running) return;
+            const totalMs = pausedtime + (Date.now() - starttime);
+            hours = Math.floor(totalMs / 3600000);
+            const remainingAfterHours = totalMs % 3600000;
+            minutes = Math.floor(remainingAfterHours / 60000);
+            const remainingAfterMinutes = remainingAfterHours % 60000;
+            sounds = Math.floor(remainingAfterMinutes / 1000);
+             ms = Math.floor((remainingAfterMinutes % 1000) / 10);
+                
+            update();
+            a = setTimeout(timing, 10);
+        }
+        
+        start.addEventListener('click', () => {
+            if (running) {
+                pausedtime += Date.now() - starttime;
+                clearTimeout(a);
+                a = null;
+                running = false;
+            } else {
+                starttime = Date.now();
+                running = true;
+                timing();
+            }
+        });
+        
+        const reset = document.getElementById("reset");
+        reset.addEventListener('click', () => {
+            if (running) {
+                clearTimeout(a);
+                a = null;
+                running = false;
+            }
+            ms = 0;
+            sounds = 0;
+            minutes = 0;
+            hours = 0;
+            starttime = null;
+            pausedtime = 0;
+            update();
+        });
+    </script>
+</body>
+</html>
