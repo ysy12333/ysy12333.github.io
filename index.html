@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>导航</title>
+    <title>导航 · ysy12333</title>
     <link rel="icon" href="/icon.png" type="image/png" sizes="32x32">
     <style>
         * {
@@ -120,7 +120,7 @@
         .result-icon {
             width: 30px;
             height: 30px;
-            background: #4b7bec;
+            background: #4b7bec;        /* 默认蓝色，beta项目会在js里覆盖为红色 */
             border-radius: 6px;
             display: flex;
             justify-content: center;
@@ -128,21 +128,25 @@
             margin-right: 10px;
             color: white;
             font-size: 0.9rem;
+            flex-shrink: 0;
         }
         
         .result-details {
             flex: 1;
+            min-width: 0;
         }
         
         .result-name {
             font-weight: 500;
             margin-bottom: 2px;
             color: #000;
+            word-break: break-word;
         }
         
         .result-desc {
             font-size: 0.8rem;
             color: #6c757d;
+            word-break: break-word;
         }
         
         .no-results {
@@ -191,10 +195,12 @@
             margin-right: 15px;
             color: white;
             font-size: 1.2rem;
+            flex-shrink: 0;
         }
         
         .file-details {
             flex: 1;
+            min-width: 0;
         }
         
         .file-name {
@@ -249,19 +255,40 @@
             .main-content {
                 padding: 20px 15px;
             }
+        }
+        .file-item {
+            padding: 12px;
+        }
             
-            .file-item {
-                padding: 12px;
-            }
-            
-            .footer {
-                padding: 12px 15px;
-            }
+        .footer {
+            padding: 12px 15px;
+        }
 
-            .file_name_s {
-                font-size: 12px;
-                color: grey;
-            }
+        .file_name_s {
+            font-size: 12px;
+            color: grey;
+        }
+        .beta {
+            border: 1px solid red;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .beta .file-icon {
+            width: 40px;
+            height: 40px;
+            background: red;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* 让搜索结果里的红色图标专用类（由js动态加上） */
+        .result-icon-beta {
+            background: red !important;
         }
     </style>
 </head>
@@ -354,7 +381,7 @@
                     </div>
                     <div class="file-details">
                         <div class="file-name">当前时间精简版</div>
-                        <div class="file_name_s">JS学习产品，AI辅助</div>
+                        <div class="file_name_s">JS学习产品，AI辅助<br>注：此时间显示的是系统时间，不一定准</div>
                     </div>
                 </a>
                 <a href="/cache/6.html" class="file-item" data-name="数字秒表精简版" data-desc="JS学习产品，AI辅助" target="_blank">
@@ -370,11 +397,30 @@
                     </div>
                 </a>
             </div>
+            <br>
+            <div class="file-list">
+                <p class="file-name">Beta 此区域为测试版，为完工，有许多未知bug</p>
+                <div class="beta" id="originalList3">
+                    <a href="/game1/" class="file-item" data-name="活动手指" data-desc="自制小小小游戏" target="_blank">
+                        <div class="file-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                            </svg>
+                        </div>
+                        <div class="file-details">
+                            <div class="file-name">活动手指</div>
+                            <div class="file_name_s">自制小小小游戏</div>
+                        </div>
+                    </a>
+                    
+                </div>
+            </div>
         </div>
         
         <div class="footer">
-            <p>© 2026 ysy12333的导航界面</p>
-            <p>最后更新：20260218</p>
+            <p>© 2026 ysy12333</p>
+            <p>最后更新：20260220</p>
             <p>祝大家新年快乐！🎉🎉</p>
         </div>
     </div>
@@ -385,13 +431,27 @@
             const searchResults = document.getElementById('searchResults');
             const fileItems = document.querySelectorAll('.file-item');
             
-            // 收集所有项目数据
-            const projects = Array.from(fileItems).map(item => ({
-                element: item,
-                name: item.getAttribute('data-name') || item.querySelector('.file-name').textContent,
-                desc: item.getAttribute('data-desc') || item.querySelector('.file_name_s').textContent,
-                href: item.href
-            }));
+            // 收集所有项目数据，并标记是否属于beta区域 (originalList3 内的项目)
+            const projects = Array.from(fileItems).map(item => {
+                // 判断是否属于beta：查找祖先元素中是否包含 beta 类
+                let isBeta = false;
+                let parent = item.parentElement;
+                while (parent) {
+                    if (parent.classList && parent.classList.contains('beta')) {
+                        isBeta = true;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                return {
+                    element: item,
+                    name: item.getAttribute('data-name') || item.querySelector('.file-name')?.textContent || '',
+                    desc: item.getAttribute('data-desc') || item.querySelector('.file_name_s')?.textContent || '',
+                    href: item.href,
+                    isBeta: isBeta      // 标记是否为beta项目
+                };
+            });
             
             // 高亮显示关键词
             function highlightText(text, searchTerm) {
@@ -421,9 +481,13 @@
                         const highlightedName = highlightText(project.name, searchTerm);
                         const highlightedDesc = highlightText(project.desc, searchTerm);
                         
+                        // 根据isBeta决定图标颜色：beta项目使用红色，否则保持默认蓝色（无需额外类，通过内联或类控制）
+                        // 为清晰，添加一个条件类 result-icon-beta (红色)
+                        const iconClass = project.isBeta ? 'result-icon result-icon-beta' : 'result-icon';
+                        
                         resultsHTML += `
                             <a href="${project.href}" class="search-result-item">
-                                <div class="result-icon">
+                                <div class="${iconClass}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
                                         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
