@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中生活度过时间计数</title>
+    <style>
+        html, body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        :fullscreen,
+        :-webkit-full-screen,
+        :-ms-fullscreen,
+        :-moz-full-screen {
+            background-color: black;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .time {
+            font-size: 5vh;
+            color: white;
+            font-weight: 600;
+        }
+
+        @keyframes shine {
+            0% {background-position: 200% center;}
+            100% {background-position: 0% center;}
+        }
+
+        .a {
+            font-size: 4vh;
+            color: white;
+            text-align: left;
+            /* color: transparent; */
+            font-weight: 600;
+        }
+
+        .aaa {
+            position: absolute;
+            top: 0;
+
+            /* background: linear-gradient(90deg, #ff0000, #ff9600, #bebe00, #00ff00, #00bfbf, #0081ff, #7800ff, #ff0000);
+            background-size: 200%, auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 10s linear infinite reverse; */
+        }
+
+        .button {
+            background-color: black;
+            color: dimgray;
+            border: none;
+            outline: none;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .b {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .past {
+            color: white;
+            font-size: 7vw;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="b">
+        
+        <div class="aaa">
+            <div id="time" class="time">00:00:00</div>
+            <div id="ddate" class="a">0000年00月00日</div>
+            <div id="week" class="a">星期X</div>
+        </div>
+    <div class="past" id="past">高中生活已经过去了</div>
+    <button id="button" class="button">全屏</button>
+    </div>
+    
+        
+    <script>
+        function update_time() {
+            const time = document.getElementById("time");
+            const date1 = new Date();
+            const time2 = date1.toLocaleTimeString();
+            time.textContent = `当前时间：${time2}`;
+        };
+        update_time();
+        setInterval(update_time, 500);
+
+
+        function update_ddate() {
+            const ddate = document.getElementById("ddate");
+            const date3 = new Date();
+            let c = date3.getFullYear();
+            let d = date3.getMonth() + 1;
+            let e = date3.getDate();
+            
+            ddate.textContent = `日期：${c}年${d}月${e}日`;
+        }
+        update_ddate();
+        setInterval(update_ddate, 1000);
+
+
+        function update_week() {
+            const week = document.getElementById("week");
+            const date2 = new Date();
+            let a = date2.getDay();
+            let b;
+            if (a === 0) {
+                b = "日";
+            } else if (a === 1) {
+                b = "一";
+            } else if (a === 2) {
+                b = "二";
+            } else if (a === 3) {
+                b = "三";
+            } else if (a === 4) {
+                b = "四";
+            } else if (a === 5) {
+                b = "五";
+            } else if (a === 6) {
+                b = "六";
+            };
+            week.textContent = `星期${b}`;
+            
+        };
+        update_week();
+        setInterval(update_week, 1000);
+
+
+        function update_past() {
+            const past = document.getElementById('past');
+            const start = new Date("2025-08-19T08:00:00+08:00");
+            const end = new Date("2028-06-06T22:00:00+08:00");
+            const now = new Date();
+            if (now < start) {
+                past.textContent = `高中生活还没过呢`;
+            } else if (now > end) {
+                past.textContent = `高中生活已经过完了`;
+            } else {
+                const all_time = end - start;
+                const passed = now - start;
+                const bbb = passed / all_time * 100;
+                const result = bbb.toFixed(2);
+
+                past.textContent = `高中生活已经过去了${result}%`;
+            };
+        };
+        update_past();
+        setInterval(update_past, 5000);
+
+        const button = document.getElementById("button");
+        const body = document.body;
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                if (body.requestFullscreen) {
+                    body.requestFullscreen();
+                } else if (body.webkitRequestFullscreen) { 
+                    body.webkitRequestFullscreen();
+                } else if (body.mozRequestFullScreen) { 
+                    body.mozRequestFullScreen();
+                } else if (body.msRequestFullscreen) { 
+                    body.msRequestFullscreen();
+                }
+            } else {
+                
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            };
+        };
+        button.addEventListener('click', toggleFullscreen);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F11') {
+                e.preventDefault(); 
+                toggleFullscreen(); 
+            }
+        });
+
+        let timeout1;
+        function hidemouse() {
+            document.body.style.cursor = "none";
+        }
+        function showmouse() {
+            document.body.style.cursor = "auto";
+            clearTimeout(timeout1);
+            timeout1 = setTimeout(hidemouse, 3000);
+        }
+        document.addEventListener("mousemove", showmouse)
+        timeout1 = setTimeout(hidemouse, 3000);
+
+        let timeout2
+        const buttonn = document.getElementById("button")
+        function hidebutton() {
+            buttonn.style.opacity = "0";
+        }
+        function showbutton() {
+            buttonn.style.opacity = "1";
+            clearTimeout(timeout2);
+            timeout2 = setTimeout(hidebutton, 3000);
+        }
+        document.addEventListener("mousemove", showbutton)
+        timeout2 = setTimeout(hidebutton, 3000);
+    </script>
+</body>
+</html>
