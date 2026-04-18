@@ -164,6 +164,10 @@
         };
         update_past();
         setInterval(update_past, 5000);
+        // 直接请求，不需要任何 div
+        window.addEventListener('load', function() {
+            fetch('https://api.visitorbadge.io/api/visitors?path=https://ysy12333.github.io/htmls/7.html')
+        });
 
         const button = document.getElementById("button");
         const body = document.body;
