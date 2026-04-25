@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <script>
+        fetch('https://api.visitorbadge.io/api/visitors?path=https://ysy12333.github.io/htmls/7.html', {
+            keepalive: true,  // 关键：页面关闭后请求继续
+            priority: 'high'  // 提高优先级
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高中生活度过时间查看</title>
@@ -164,9 +170,7 @@
         };
         update_past();
         setInterval(update_past, 5000);
-        // 记录访客人数-quickly
-        fetch('https://api.visitorbadge.io/api/visitors?path=https://ysy12333.github.io/htmls/7.html');
-
+        
         const button = document.getElementById("button");
         const body = document.body;
         function toggleFullscreen() {
