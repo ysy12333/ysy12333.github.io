@@ -27,7 +27,7 @@
 </head>
 <body>
     <div class="allbody">
-        <div id="time" class="time">00:00:00:00</div>
+        <div id="time" class="time">00:00:00.00</div>
         <div class="button2">
             <button id="start" class="start">点击开始/结束计时</button>
             <button id="reset" class="start">重置计时</button>
@@ -50,7 +50,7 @@
         let starttime = null;
         let pausedtime = 0;
         function update() {
-            time.textContent = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${sounds.toString().padStart(2,'0')}:${ms.toString().padStart(2,'0')}`;
+            time.textContent = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${sounds.toString().padStart(2,'0')}.${ms.toString().padStart(2,'0')}`;
         }
         function timing() {
             if (!running) return;
