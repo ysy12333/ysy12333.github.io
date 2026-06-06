@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    // <script>
+        // fetch('https://api.visitorbadge.io/api/visitors?path=https://', {
+            // keepalive: true,  // 关键：页面关闭后请求继续
+            // priority: 'high'  // 提高优先级
+        // });
+    // </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考倒计时</title>
+    <script src="https://unpkg.com/dayjs"></script>
+    <script src="https://unpkg.com/dayjs/plugin/duration.js"></script>
+    <style>
+        html, body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        :fullscreen,
+        :-webkit-full-screen,
+        :-ms-fullscreen,
+        :-moz-full-screen {
+            background-color: black;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .time {
+            color: white;
+            font-weight: 600;
+        }
+
+        @keyframes shine {
+            0% {background-position: 200% center;}
+            100% {background-position: 0% center;}
+        }
+
+        .a {
+            color: white;
+            text-align: left;
+            /* color: transparent; */
+            font-weight: 600;
+        }
+
+        .aaa {
+            position: absolute;
+            top: 0;
+
+            /* background: linear-gradient(90deg, #ff0000, #ff9600, #bebe00, #00ff00, #00bfbf, #0081ff, #7800ff, #ff0000);
+            background-size: 200%, auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 10s linear infinite reverse; */
+        }
+
+        .button {
+            background-color: black;
+            color: dimgray;
+            border: none;
+            outline: none;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .b {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .past {
+            color: white;
+            font-size: 5.3vw;
+            text-align: center;
+        }
+
+        .past2 {
+            color: white;
+            font-size: 5vw;
+            text-align: center;
+        }
+        
+        .center {
+            transform: translateY(-3vh);
+        }
+    </style>
+</head>
+<body>
+    <div class="b">
+        
+        <div class="aaa">
+            <div id="time" class="time">00:00:00</div>
+            <div id="ddate" class="a">0000年00月00日</div>
+            <div id="week" class="a">星期X</div>
+        </div>
+    <div class="center">
+        <div class="past2">高中2025级</div>
+        <div id="countdown" class="past">距离高考还剩</div>
+    </div>
+    <button id="button" class="button">全屏</button>
+    </div>
+    
+        
+    <script>
+        function update_time() {
+            const time = document.getElementById("time");
+            const date1 = new Date();
+            const time2 = date1.toLocaleTimeString();
+            time.textContent = `当前时间：${time2}`;
+        };
+        update_time();
+        setInterval(update_time, 500);
+
+
+        function update_ddate() {
+            const ddate = document.getElementById("ddate");
+            const date3 = new Date();
+            let c = date3.getFullYear();
+            let d = date3.getMonth() + 1;
+            let e = date3.getDate();
+            
+            ddate.textContent = `日期：${c}年${d}月${e}日`;
+        }
+        update_ddate();
+        setInterval(update_ddate, 1000);
+
+
+        function update_week() {
+            const week = document.getElementById("week");
+            const date2 = new Date();
+            let a = date2.getDay();
+            let b;
+            if (a === 0) {
+                b = "日";
+            } else if (a === 1) {
+                b = "一";
+            } else if (a === 2) {
+                b = "二";
+            } else if (a === 3) {
+                b = "三";
+            } else if (a === 4) {
+                b = "四";
+            } else if (a === 5) {
+                b = "五";
+            } else if (a === 6) {
+                b = "六";
+            };
+            week.textContent = `星期${b}`;
+            
+        };
+        update_week();
+        setInterval(update_week, 1000);
+
+
+
+        dayjs.extend(window.dayjs_plugin_duration);
+        
+        const target = dayjs('2028-06-07 09:00:00');
+        const pad = (n) => String(n).padStart(2, '0');
+        
+        function update() {
+            const diff = target.diff(dayjs());
+            if (diff <= 0) {
+                document.getElementById('countdown').innerText = '🎓 高考开始，加油！';
+                return;
+            }
+              
+            const dur = dayjs.duration(diff);
+            const days = Math.floor(dur.asDays());
+            const hours = dur.hours();
+            const minutes = dur.minutes();
+            const seconds = dur.seconds();
+
+            document.getElementById('countdown').innerText = 
+                `距离高考还剩: ${days}天 ${pad(hours)}小时 ${pad(minutes)}分 ${pad(seconds)}秒`;
+            }
+            
+            update();
+            setInterval(update, 100);
+        
+        
+        const button = document.getElementById("button");
+        const body = document.body;
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                if (body.requestFullscreen) {
+                    body.requestFullscreen();
+                } else if (body.webkitRequestFullscreen) { 
+                    body.webkitRequestFullscreen();
+                } else if (body.mozRequestFullScreen) { 
+                    body.mozRequestFullScreen();
+                } else if (body.msRequestFullscreen) { 
+                    body.msRequestFullscreen();
+                }
+            } else {
+                
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            };
+        };
+        button.addEventListener('click', toggleFullscreen);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F11') {
+                e.preventDefault(); 
+                toggleFullscreen(); 
+            }
+        });
+
+        let timeout1;
+        function hidemouse() {
+            document.body.style.cursor = "none";
+        }
+        function showmouse() {
+            document.body.style.cursor = "auto";
+            clearTimeout(timeout1);
+            timeout1 = setTimeout(hidemouse, 3000);
+        }
+        document.addEventListener("mousemove", showmouse)
+        timeout1 = setTimeout(hidemouse, 3000);
+
+        let timeout2
+        const buttonn = document.getElementById("button")
+        function hidebutton() {
+            buttonn.style.opacity = "0";
+        }
+        function showbutton() {
+            buttonn.style.opacity = "1";
+            clearTimeout(timeout2);
+            timeout2 = setTimeout(hidebutton, 3000);
+        }
+        document.addEventListener("mousemove", showbutton)
+        timeout2 = setTimeout(hidebutton, 3000);
+    </script>
+</body>
+</html>
