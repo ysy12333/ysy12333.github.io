@@ -9,18 +9,18 @@ jobs:
   update-time:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    # 跳过自动提交触发的运行，避免死循环
     if: "!contains(github.event.head_commit.message, 'chore: 自动更新时间')"
 
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # 关键：显式传入 token
 
       - name: 检查占位符是否存在
         run: |
           if ! grep -q "{{UPDATE_TIME}}" index.html; then
             echo "⚠️ 警告：index.html 里没有找到 {{UPDATE_TIME}} 占位符！"
-            echo "请检查 HTML 文件是否正确。"
             exit 0
           fi
           echo "✅ 占位符存在"
