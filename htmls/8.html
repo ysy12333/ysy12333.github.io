@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    // <script>
-        // fetch('https://api.visitorbadge.io/api/visitors?path=https://', {
-            // keepalive: true,  // 关键：页面关闭后请求继续
-            // priority: 'high'  // 提高优先级
-        // });
-    // </script>
+    <script>
+        fetch('https://api.visitorbadge.io/api/visitors?path==https://ysy12333.github.io/htmls/8.html', {
+            keepalive: true,  // 关键：页面关闭后请求继续
+            priority: 'high'  // 提高优先级
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高考倒计时</title>
-    <script src="https://unpkg.com/dayjs"></script>
-    <script src="https://unpkg.com/dayjs/plugin/duration.js"></script>
+    <script src="js/dayjs.min.js"></script>
+    <script src="js/duration.js"></script>
     <style>
         html, body {
             background-color: black;
@@ -28,32 +28,39 @@
             min-height: 100vh;
         }
         
-        .time {
-            color: white;
-            font-weight: 600;
+        @media all and (orientation: landscape) {/* 横屏 */
+            .time {
+                font-size: 5vh;
+                color: white;
+                font-weight: 600;
+            }
+            .a {
+                font-size: 4vh;
+                color: white;
+                text-align: left;
+                font-weight: 600;
+            }
+            .aaa {
+                position:fixed;
+                top: 0;
+            }
         }
-
-        @keyframes shine {
-            0% {background-position: 200% center;}
-            100% {background-position: 0% center;}
-        }
-
-        .a {
-            color: white;
-            text-align: left;
-            /* color: transparent; */
-            font-weight: 600;
-        }
-
-        .aaa {
-            position: absolute;
-            top: 0;
-
-            /* background: linear-gradient(90deg, #ff0000, #ff9600, #bebe00, #00ff00, #00bfbf, #0081ff, #7800ff, #ff0000);
-            background-size: 200%, auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 10s linear infinite reverse; */
+        @media all and (orientation: portrait) {
+            .time {
+                font-size: 5vw;
+                color: white;
+                font-weight: 600;
+            }
+            .a {
+                font-size: 4vw;
+                color: white;
+                text-align: left;
+                font-weight: 600;
+            }
+            .aaa {
+                position:fixed;
+                top: 0;
+            }
         }
 
         .button {

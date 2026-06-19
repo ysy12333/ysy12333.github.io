@@ -26,34 +26,39 @@
             min-height: 100vh;
         }
         
-        .time {
-            font-size: 5vh;
-            color: white;
-            font-weight: 600;
+        @media all and (orientation: landscape) {/* 横屏 */
+            .time {
+                font-size: 5vh;
+                color: white;
+                font-weight: 600;
+            }
+            .a {
+                font-size: 4vh;
+                color: white;
+                text-align: left;
+                font-weight: 600;
+            }
+            .aaa {
+                position:fixed;
+                top: 0;
+            }
         }
-
-        @keyframes shine {
-            0% {background-position: 200% center;}
-            100% {background-position: 0% center;}
-        }
-
-        .a {
-            font-size: 4vh;
-            color: white;
-            text-align: left;
-            /* color: transparent; */
-            font-weight: 600;
-        }
-
-        .aaa {
-            position: absolute;
-            top: 0;
-
-            /* background: linear-gradient(90deg, #ff0000, #ff9600, #bebe00, #00ff00, #00bfbf, #0081ff, #7800ff, #ff0000);
-            background-size: 200%, auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 10s linear infinite reverse; */
+        @media all and (orientation: portrait) {
+            .time {
+                font-size: 5vw;
+                color: white;
+                font-weight: 600;
+            }
+            .a {
+                font-size: 4vw;
+                color: white;
+                text-align: left;
+                font-weight: 600;
+            }
+            .aaa {
+                position:fixed;
+                top: 0;
+            }
         }
 
         .button {
