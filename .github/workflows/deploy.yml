@@ -1,4 +1,4 @@
-name: 自动更新时间并部署
+name: 自动更新时间
 
 on:
   push:
@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  update-and-deploy:
+  update-time:
     runs-on: ubuntu-latest
-    timeout-minutes: 5                     # 防卡死，5分钟超时自动终止
+    timeout-minutes: 5
     # 跳过自动提交触发的运行，避免死循环
     if: "!contains(github.event.head_commit.message, 'chore: 自动更新时间')"
 
@@ -16,13 +16,14 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 检查占位符是否存在（安全校验）
+      - name: 检查占位符是否存在
         run: |
           if ! grep -q "{{UPDATE_TIME}}" index.html; then
-            echo "⚠️ 警告：index.html 里没有找到 {{UPDATE_TIME}} 占位符，将跳过替换。"
-          else
-            echo "✅ 占位符存在，准备替换。"
+            echo "⚠️ 警告：index.html 里没有找到 {{UPDATE_TIME}} 占位符！"
+            echo "请检查 HTML 文件是否正确。"
+            exit 0
           fi
+          echo "✅ 占位符存在"
 
       - name: 注入北京时间
         run: |
@@ -30,12 +31,10 @@ jobs:
           sed -i "s/{{UPDATE_TIME}}/$DATE/g" index.html
           echo "✅ 时间已更新为：$DATE"
 
-      - name: 部署到 main 分支（安全覆盖）
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./                   # 把整个仓库根目录的文件部署上去
-          publish_branch: main              # 直接推送到 main 分支
-          force_orphan: false               # 不强制孤儿提交，保留历史
-          keep_files: true                  # 保留 main 分支里其他未覆盖的文件
-          commit_message: 'chore: 自动更新时间'   # 自定义提交信息，用于跳过触发
+      - name: 提交并推送更改
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "chore: 自动更新时间"
+          git push
