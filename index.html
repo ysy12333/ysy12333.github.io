@@ -290,6 +290,26 @@
         .result-icon-beta {
             background: red !important;
         }
+
+        .foot {
+            display: flex;
+            flex-direction: row;
+            width: fit-content;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        .source {
+            font-size: 0.8em;
+        }
     </style>
 </head>
 <body>
@@ -443,9 +463,14 @@
         </div>
         
         <div class="footer">
-            <p>© 2026 ysy12333</p>
-            <p>最后更新：2026年6月6日，星期六</p>
-            <p>六六六大顺</p>
+            <div class="foot">
+                <p>© 2026 ysy12333</p>
+                <a href="https://github.com/ysy12333/ysy12333.github.io/" class="about">
+                    <img src="github.jpg" style="width: 2.5em;">
+                    <span class="source">访问源代码</span>
+                </a>
+            </div>
+            <p>最后更新：2026年6月19日，星期五</p>
             <!--<p>祝大家新年快乐！🎉🎉</p>-->
         </div>
     </div>
