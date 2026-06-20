@@ -27,7 +27,7 @@ jobs:
 
       - name: 注入北京时间
         run: |
-          DATE=$(date '+%Y年%m月%d日，%A' -d '+8 hours')
+          DATE=$(date '+%Y-%m-%d  %A' -d '+8 hours')
           sed -i "s/{{UPDATE_TIME}}/$DATE/g" index.html
           echo "✅ 时间已更新为：$DATE"
 
