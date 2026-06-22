@@ -420,13 +420,21 @@
   // ============================================================
   // 循环
   // ============================================================
-  function loop(time) {
-    if (time - lastMove > DELAY) {
-      step();
-      lastMove = time;
+  function loop() {
+    const now = performance.now();
+    
+    // 移动逻辑
+    if (now - lastMove > DELAY) {
+    step();
+    lastMove = now;
     }
+    
+    // 绘制
     draw();
-    requestAnimationFrame(loop);
+    
+    // 用 setTimeout 代替 requestAnimationFrame
+    // 间隔设为 DELAY，既控制速度又降低 CPU
+    setTimeout(loop, 100);
   }
 
   // ============================================================
