@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,416 +9,552 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
-        
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
-            min-height: 100vh;
+            background: #0a0a0a;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+        canvas {
             display: block;
-            padding: 0;
-            color: #333;
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a1a;
         }
-        
-        .file-manager {
-            width: 100%;
-            max-width: none;
-            background: white;
-            border-radius: 0;
-            box-shadow: none;
-            overflow: hidden;
-        }
-        
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-right: auto;
-        }
-        
-        .search-container {
-            position: relative;
-            width: 300px;
-            max-width: 100%;
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 10px 40px 10px 15px;
-            border: none;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .search-box:focus {
-            background: white;
-            box-shadow: 0 0 0 2px rgba(76, 123, 236, 0.3);
-        }
-        
-        .search-box::placeholder {
-            color: #888;
-        }
-        
-        .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6c757d;
-            pointer-events: none;
-        }
-        
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-top: 5px;
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-        
-        .search-result-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+        #fullscreenBtn {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            z-index: 999;
+            backdrop-filter: blur(2px);
+            user-select: none;
+            transition: 0.3s;
             cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
         }
-        
-        .search-result-item:hover {
-            background: #f5f7fa;
-        }
-        
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-        
-        .result-icon {
-            width: 30px;
-            height: 30px;
-            background: #4b7bec;
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 10px;
-            color: white;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-        
-        .result-details {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .result-name {
-            font-weight: 500;
-            margin-bottom: 2px;
-            color: #000;
-            word-break: break-word;
-        }
-        
-        .result-desc {
-            font-size: 0.8rem;
-            color: #6c757d;
-            word-break: break-word;
-        }
-        
-        .no-results {
-            padding: 20px;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
-        }
-        
-        .main-content {
-            padding: 30px 25px;
-        }
-        
-        .file-list {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #e9ecef;
-            transition: background 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .file-item:last-child {
-            border-bottom: none;
-        }
-        
-        .file-item:hover {
-            background: #f8f9fa;
-        }
-        
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            background: #4b7bec;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            color: white;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        
-        .file-details {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .file-name {
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-        
-        .file_name_s {
-            font-size: 12px;
-            color: grey;
-        }
-        
-        .highlight {
-            background-color: #fffacd;
-            padding: 0 2px;
-            border-radius: 2px;
-        }
-        
-        @media (max-width: 600px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.3rem;
-                margin-right: 0;
-                width: 100%;
-            }
-            
-            .search-container {
-                width: 100%;
-            }
-            
-            .main-content {
-                padding: 20px 15px;
-            }
-            .file-item {
-                padding: 12px;
-            }
+        #fullscreenBtn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
 <body>
-    <div class="file-manager">
-        <div class="header">
-            <h1>贪吃蛇屏保</h1>
-            <div class="search-container">
-                <input type="text" class="search-box" placeholder="搜索项目...">
-                <div class="search-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
-                </div>
-                <div class="search-results" id="searchResults"></div>
-            </div>
-        </div>
-        
-        <div class="main-content">
-            <div class="file-list">
-                <a href="9_htmls/1.html" class="file-item" data-name="贪吃蛇屏保 + BFS最短路径" data-desc="大直男走法" target="_blank">
-                    <div class="file-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
-                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
-                        </svg>
-                    </div>
-                    <div class="file-details">
-                        <div class="file-name">贪吃蛇屏保 + BFS最短路径</div>
-                        <div class="file_name_s">大直男走法</div>
-                    </div>
-                </a>
-            </div>
-            <br>
-            <div class="file-list">
-                <a href="9_htmls/2.html" class="file-item" data-name="贪吃蛇屏保 + BFS + 随机扰动" data-desc="更真实的走法" target="_blank">
-                    <div class="file-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
-                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
-                        </svg>
-                    </div>
-                    <div class="file-details">
-                        <div class="file-name">贪吃蛇屏保 + BFS + 随机扰动</div>
-                        <div class="file_name_s">更真实的走法</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <button id="fullscreenBtn">⛶</button>
 
     <script>
-        /**
-         * 页面加载完成后初始化搜索功能
-         * 为搜索框绑定输入、焦点、键盘事件，并管理搜索结果下拉列表
-         */
-        document.addEventListener('DOMContentLoaded', function() {
-            // 获取搜索相关 DOM 元素
-            const searchBox = document.querySelector('.search-box');
-            const searchResults = document.getElementById('searchResults');
-            const fileItems = document.querySelectorAll('.file-item');
-            
-            /**
-             * 构建项目数据数组
-             * 遍历所有 .file-item，提取名称、描述和链接
-             */
-            const projects = Array.from(fileItems).map(item => ({
-                element: item,
-                name: item.getAttribute('data-name') || item.querySelector('.file-name')?.textContent || '',
-                desc: item.getAttribute('data-desc') || item.querySelector('.file_name_s')?.textContent || '',
-                href: item.href
-            }));
-            
-            /**
-             * 在文本中高亮显示搜索关键词
-             * @param {string} text - 原始文本
-             * @param {string} searchTerm - 搜索关键词
-             * @returns {string} 包含高亮标记的 HTML 字符串
-             */
-            function highlightText(text, searchTerm) {
-                if (!searchTerm.trim()) return text;
-                // 转义正则特殊字符，构建全局不区分大小写的匹配
-                const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-                return text.replace(regex, '<span class="highlight">$1</span>');
+        // ============================================================
+        // 屏保配置
+        // ============================================================
+        const GRID = 16;
+        const DELAY = 70;
+        const WRAP = true;
+        const FORCE_FOOD_INTERVAL = 8000;
+        const INIT_SNAKE = [
+            [3, 3],
+            [3, 4],
+            [3, 5]
+        ];
+        const RANDOM_CHANCE = 0.00; // 随机扰动概率（制造盲目感）
+        const FOOD_SAFETY_RADIUS = 2; // 食物周围检测半径（格）
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let cellSize = 0;
+        let cols = GRID,
+            rows = GRID;
+
+        // ============================================================
+        // 游戏状态
+        // ============================================================
+        let snake = [];
+        let direction = [0, 1];
+        let food = null;
+        let lastAteTime = 0;
+        let running = true;
+        let lastMove = 0;
+
+        // ============================================================
+        // 初始化
+        // ============================================================
+        function init() {
+            snake = INIT_SNAKE.map(p => [p[0], p[1]]);
+            direction = [0, 1];
+            spawnFood();
+            lastAteTime = performance.now();
+        }
+
+        // ---------- 工具：检查位置周围是否有蛇 ----------
+        function hasSnakeNearby(pos, snakeArr, radius) {
+            const [fr, fc] = pos;
+            const snakeSet = new Set(snakeArr.map(p => `${p[0]},${p[1]}`));
+            for (let dr = -radius; dr <= radius; dr++) {
+                for (let dc = -radius; dc <= radius; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    const nr = ((fr + dr) % rows + rows) % rows;
+                    const nc = ((fc + dc) % cols + cols) % cols;
+                    if (snakeSet.has(`${nr},${nc}`)) return true;
+                }
             }
-            
-            /**
-             * 根据搜索词过滤项目并更新搜索结果下拉列表
-             * @param {string} searchTerm - 用户输入的搜索词
-             */
-            function performSearch(searchTerm) {
-                // 如果搜索词为空，隐藏下拉框并返回
-                if (!searchTerm.trim()) {
-                    searchResults.style.display = 'none';
+            return false;
+        }
+
+        // ---------- 生成食物（安全检测） ----------
+        function spawnFood() {
+            const set = new Set(snake.map(p => `${p[0]},${p[1]}`));
+            const empty = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (!set.has(`${r},${c}`)) empty.push([r, c]);
+                }
+            }
+            if (empty.length === 0) { init(); return; }
+
+            // 打乱候选，尝试找一个周围安全的位置
+            const shuffled = [...empty];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+
+            for (const pos of shuffled) {
+                if (!hasSnakeNearby(pos, snake, FOOD_SAFETY_RADIUS)) {
+                    food = pos;
                     return;
                 }
-                
-                // 过滤项目：名称或描述包含搜索词（不区分大小写）
-                const filteredProjects = projects.filter(project => {
-                    const nameMatch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
-                    const descMatch = project.desc.toLowerCase().includes(searchTerm.toLowerCase());
-                    return nameMatch || descMatch;
-                });
-                
-                // 生成结果列表
-                if (filteredProjects.length > 0) {
-                    let resultsHTML = '';
-                    filteredProjects.forEach(project => {
-                        // 对匹配的文本进行高亮处理
-                        const highlightedName = highlightText(project.name, searchTerm);
-                        const highlightedDesc = highlightText(project.desc, searchTerm);
-                        
-                        // 构建每个搜索结果项（图标使用固定蓝色背景）
-                        resultsHTML += `
-                            <a href="${project.href}" class="search-result-item" target="_blank">
-                                <div class="result-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M5 4a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 9h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 4H5zm0-3a.5.5 0 0 0-.496.438l-.5 4A.5.5 0 0 0 4.5 6h7a.5.5 0 0 0 .496-.562l-.5-4A.5.5 0 0 0 11 1H5z"/>
-                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
-                                    </svg>
-                                </div>
-                                <div class="result-details">
-                                    <div class="result-name">${highlightedName}</div>
-                                    <div class="result-desc">${highlightedDesc}</div>
-                                </div>
-                            </a>
-                        `;
-                    });
-                    
-                    searchResults.innerHTML = resultsHTML;
-                    searchResults.style.display = 'block';
-                } else {
-                    // 无匹配结果时显示提示信息
-                    searchResults.innerHTML = '<div class="no-results">未找到匹配的项目</div>';
-                    searchResults.style.display = 'block';
+            }
+
+            // 如果所有位置都不安全，退而求其次：选一个蛇身最远的位置
+            food = shuffled[0] || empty[Math.floor(Math.random() * empty.length)];
+        }
+
+        // ---------- 强制在蛇头附近刷新食物（带安全检测） ----------
+        function forceFoodNearHead() {
+            const head = snake[snake.length - 1];
+            const dirs = [
+                direction,
+                [direction[1], -direction[0]],
+                [-direction[1], direction[0]],
+                [-direction[0], -direction[1]]
+            ];
+
+            // 尝试在蛇头周围放置食物，并检查安全性
+            for (const [dr, dc] of dirs) {
+                const pos = wrap([head[0] + dr, head[1] + dc]);
+                if (isValid(pos, snake) && !hasSnakeNearby(pos, snake, FOOD_SAFETY_RADIUS)) {
+                    food = pos;
+                    return;
                 }
             }
-            
-            // ----- 事件绑定 -----
-            
-            // 输入实时搜索
-            searchBox.addEventListener('input', function() {
-                performSearch(this.value);
-            });
-            
-            // 获得焦点时，若有内容则显示结果
-            searchBox.addEventListener('focus', function() {
-                if (this.value.trim()) {
-                    searchResults.style.display = 'block';
+
+            // 如果上述位置都不安全，从所有空格中选一个安全的
+            const set = new Set(snake.map(p => `${p[0]},${p[1]}`));
+            const empty = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (!set.has(`${r},${c}`)) empty.push([r, c]);
                 }
-            });
-            
-            // 点击页面其他区域关闭搜索结果下拉框
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.search-container')) {
-                    searchResults.style.display = 'none';
+            }
+            // 打乱后尝试
+            for (let i = empty.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [empty[i], empty[j]] = [empty[j], empty[i]];
+            }
+            for (const pos of empty) {
+                if (!hasSnakeNearby(pos, snake, FOOD_SAFETY_RADIUS)) {
+                    food = pos;
+                    return;
                 }
-            });
-            
-            // 键盘快捷键：ESC 关闭并失焦，Enter 跳转到第一个结果
-            searchBox.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    searchResults.style.display = 'none';
-                    this.blur();
+            }
+            // 实在不行，随便放一个
+            if (empty.length > 0) food = empty[0];
+            else init();
+        }
+
+        // ---------- 工具函数 ----------
+        function wrap(p) {
+            let [r, c] = p;
+            if (WRAP) {
+                r = ((r % rows) + rows) % rows;
+                c = ((c % cols) + cols) % cols;
+            }
+            return [r, c];
+        }
+
+        function isValid(p, snakeArr) {
+            const [r, c] = p;
+            const set = new Set(snakeArr.map(p => `${p[0]},${p[1]}`));
+            if (WRAP) return !set.has(`${r},${c}`);
+            return r >= 0 && r < rows && c >= 0 && c < cols && !set.has(`${r},${c}`);
+        }
+
+        // ============================================================
+        // BFS 最短路径 + 方向偏好（修复 "一上一下" 问题）
+        // ============================================================
+
+        /**
+         * BFS 寻路：从起点到终点的最短路径
+         * @param {Array} start      [r, c]
+         * @param {Array} target     [r, c]
+         * @param {Array} snakeArr   蛇身数组
+         * @param {Array} preferredDir 偏好方向 [dr, dc]（当前方向）
+         * @returns {Array|null} 路径数组（从起点到终点），不可达返回 null
+         */
+        function bfsShortestPath(start, target, snakeArr, preferredDir) {
+            if (start[0] === target[0] && start[1] === target[1]) {
+                return [start];
+            }
+
+            const queue = [
+                [start[0], start[1]]
+            ];
+            const visited = new Set();
+            visited.add(`${start[0]},${start[1]}`);
+            const parent = new Map();
+
+            // 四个方向：上、左、右、下
+            const dirs = [
+                [-1, 0],
+                [0, -1],
+                [0, 1],
+                [1, 0]
+            ];
+
+            // ---- 方向排序：优先探索与 preferredDir 一致的方向 ----
+            // 如果 preferredDir 存在，将与之相同的方向排在最前
+            if (preferredDir) {
+                const [pdR, pdC] = preferredDir;
+                dirs.sort((a, b) => {
+                    const dotA = a[0] * pdR + a[1] * pdC;
+                    const dotB = b[0] * pdR + b[1] * pdC;
+                    return dotB - dotA; // 点积越大，方向越接近
+                });
+            }
+
+            while (queue.length > 0) {
+                const [r, c] = queue.shift();
+
+                if (r === target[0] && c === target[1]) {
+                    const path = [];
+                    let current = [r, c];
+                    while (current) {
+                        path.unshift([current[0], current[1]]);
+                        const key = `${current[0]},${current[1]}`;
+                        if (key === `${start[0]},${start[1]}`) break;
+                        current = parent.get(key);
+                    }
+                    return path;
                 }
-                
-                if (event.key === 'Enter' && this.value.trim()) {
-                    const firstResult = searchResults.querySelector('.search-result-item');
-                    if (firstResult) {
-                        firstResult.click();  // 触发跳转
+
+                for (const [dr, dc] of dirs) {
+                    const nr = ((r + dr) % rows + rows) % rows;
+                    const nc = ((c + dc) % cols + cols) % cols;
+                    const key = `${nr},${nc}`;
+                    const pos = [nr, nc];
+
+                    const isSnakeBody = snakeArr.some(p => p[0] === nr && p[1] === nc);
+                    const isTarget = nr === target[0] && nc === target[1];
+
+                    if (!visited.has(key) && (isTarget || !isSnakeBody)) {
+                        visited.add(key);
+                        queue.push([nr, nc]);
+                        parent.set(key, [r, c]);
                     }
                 }
-            });
-            
-            // 初始隐藏搜索结果
-            searchResults.style.display = 'none';
+            }
+
+            return null;
+        }
+
+        // ---------- 检查路径是否安全 ----------
+        function isPathSafe(path, snakeArr) {
+            if (!path || path.length === 0) return false;
+            for (let i = 1; i < path.length - 1; i++) {
+                const [r, c] = path[i];
+                if (snakeArr.some(p => p[0] === r && p[1] === c)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // ---------- 计算可达空间（BFS 洪水填充） ----------
+        function countAccessible(start, snakeArr) {
+            const visited = new Set(snakeArr.map(p => `${p[0]},${p[1]}`));
+            const q = [
+                [start[0], start[1]]
+            ];
+            const sk = `${start[0]},${start[1]}`;
+            if (visited.has(sk)) visited.delete(sk);
+            let count = 0;
+            while (q.length) {
+                const [r, c] = q.shift();
+                const key = `${r},${c}`;
+                if (visited.has(key)) continue;
+                visited.add(key);
+                count++;
+                for (const [dr, dc] of [
+                        [1, 0],
+                        [-1, 0],
+                        [0, 1],
+                        [0, -1]
+                    ]) {
+                    const np = wrap([r + dr, c + dc]);
+                    const nk = `${np[0]},${np[1]}`;
+                    if (!visited.has(nk) && isValid(np, snakeArr)) q.push(np);
+                }
+            }
+            return count;
+        }
+
+        // ============================================================
+        // AI 决策（BFS + 方向偏好 + 随机扰动）
+        // ============================================================
+        function aiMove() {
+            const head = snake[snake.length - 1];
+            const cur = direction;
+            const opp = [-cur[0], -cur[1]];
+            const dirs = [
+                [-1, 0],
+                [0, -1],
+                [0, 1],
+                [1, 0]
+            ];
+
+            // ---- 随机扰动：有一定概率随机走（屏保盲目感） ----
+            if (Math.random() < RANDOM_CHANCE) {
+                const validDirs = [];
+                for (const [dr, dc] of dirs) {
+                    if (dr === opp[0] && dc === opp[1]) continue;
+                    const np = wrap([head[0] + dr, head[1] + dc]);
+                    if (isValid(np, snake)) {
+                        validDirs.push([dr, dc]);
+                    }
+                }
+                if (validDirs.length > 0) {
+                    return validDirs[Math.floor(Math.random() * validDirs.length)];
+                }
+            }
+
+            // ---- 正常逻辑：BFS 最短路径（传入当前方向作为偏好） ----
+            if (food) {
+                const path = bfsShortestPath(head, food, snake, cur);
+                // 路径安全检测
+                if (path && path.length > 0 && isPathSafe(path, snake)) {
+                    const nextPos = path[1];
+                    if (nextPos) {
+                        let dr = nextPos[0] - head[0];
+                        let dc = nextPos[1] - head[1];
+                        // 修正穿墙方向
+                        if (dr > rows / 2) dr = dr - rows;
+                        else if (dr < -rows / 2) dr = dr + rows;
+                        if (dc > cols / 2) dc = dc - cols;
+                        else if (dc < -cols / 2) dc = dc + cols;
+                        // 确保不是反向
+                        if (dr !== -opp[0] || dc !== -opp[1]) {
+                            return [dr, dc];
+                        }
+                    }
+                }
+            }
+
+            // ---- 无法到达 / 路径不安全：选择空间最大的方向（带方向偏好） ----
+            const scored = [];
+            for (const [dr, dc] of dirs) {
+                if (dr === opp[0] && dc === opp[1]) continue;
+                const np = wrap([head[0] + dr, head[1] + dc]);
+                if (!isValid(np, snake)) continue;
+
+                const newSnake = [...snake.slice(1), np];
+                const space = countAccessible(np, newSnake);
+                let score = space;
+
+                // ---- 方向偏好（修复 "一上一下" 的关键） ----
+                // 与当前方向一致：加分（鼓励直走）
+                if (dr === cur[0] && dc === cur[1]) {
+                    score += 20; // 强烈偏好当前方向
+                }
+                // 左右转：小幅度加分（比直走少，但比反向好）
+                else if ((dr === cur[1] && dc === -cur[0]) ||
+                    (dr === -cur[1] && dc === cur[0])) {
+                    score += 5;
+                }
+                // 反向：不加分（已经被跳过）
+
+                scored.push({ dir: [dr, dc], score });
+            }
+
+            if (!scored.length) return cur;
+            scored.sort((a, b) => b.score - a.score);
+            const maxScore = scored[0].score;
+            const best = scored.filter(item => item.score === maxScore);
+            const chosen = best[Math.floor(Math.random() * best.length)];
+            return chosen.dir;
+        }
+
+        // ============================================================
+        // 游戏步进
+        // ============================================================
+        function step() {
+            if (!running) return;
+
+            const now = performance.now();
+            if (now - lastAteTime > FORCE_FOOD_INTERVAL) {
+                forceFoodNearHead();
+                lastAteTime = now;
+            }
+
+            const dir = aiMove();
+            direction = dir;
+            const head = snake[snake.length - 1];
+            const newHead = wrap([head[0] + dir[0], head[1] + dir[1]]);
+
+            if (food && newHead[0] === food[0] && newHead[1] === food[1]) {
+                snake.push([newHead[0], newHead[1]]);
+                lastAteTime = now;
+                spawnFood();
+                if (!food) { init(); return; }
+            } else {
+                snake.push([newHead[0], newHead[1]]);
+                snake.shift();
+            }
+
+            const headKey = `${newHead[0]},${newHead[1]}`;
+            const bodyKeys = snake.slice(0, -1).map(p => `${p[0]},${p[1]}`);
+            if (bodyKeys.includes(headKey)) {
+                forceFoodNearHead();
+                lastAteTime = performance.now();
+                init();
+                return;
+            }
+        }
+
+        // ============================================================
+        // 绘制（全屏自适应，蛇身圆角 + 渐变）
+        // ============================================================
+        function draw() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, w, h);
+
+            // 网格线（极淡）
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 0.3;
+            for (let i = 0; i <= cols; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * cellSize, 0);
+                ctx.lineTo(i * cellSize, h);
+                ctx.stroke();
+            }
+            for (let i = 0; i <= rows; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, i * cellSize);
+                ctx.lineTo(w, i * cellSize);
+                ctx.stroke();
+            }
+
+            // 食物（发光圆点）
+            if (food) {
+                const [fr, fc] = food;
+                ctx.beginPath();
+                ctx.arc(fc * cellSize + cellSize / 2, fr * cellSize + cellSize / 2, cellSize * 0.3, 0, 2 * Math.PI);
+                ctx.fillStyle = '#ff4444';
+                ctx.shadowColor = '#ff444488';
+                ctx.shadowBlur = 12;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            // 蛇身（渐变色，头部白色高亮）
+            const len = snake.length;
+            const shrink = 0.85;
+            const offset = cellSize * (1 - shrink) / 2;
+            for (let i = 0; i < len; i++) {
+                const [r, c] = snake[i];
+                const x = c * cellSize + offset;
+                const y = r * cellSize + offset;
+                const size = cellSize * shrink;
+                let color;
+                if (i === len - 1) {
+                    color = '#ffffff';
+                } else {
+                    const hue = 50 + (i / Math.max(len - 1, 1)) * 240;
+                    color = `hsl(${hue}, 90%, 60%)`;
+                }
+                ctx.fillStyle = color;
+                ctx.shadowColor = (i === len - 1) ? '#ffffff66' : color + '66';
+                ctx.shadowBlur = (i === len - 1) ? 16 : 4;
+                const radius = size * 0.15;
+                ctx.beginPath();
+                ctx.moveTo(x + radius, y);
+                ctx.arcTo(x + size, y, x + size, y + size, radius);
+                ctx.arcTo(x + size, y + size, x, y + size, radius);
+                ctx.arcTo(x, y + size, x, y, radius);
+                ctx.arcTo(x, y, x + size, y, radius);
+                ctx.closePath();
+                ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+        }
+
+        // ============================================================
+        // 循环（固定帧率降低 CPU）
+        // ============================================================
+        function loop() {
+            const now = performance.now();
+            if (now - lastMove > DELAY) {
+                step();
+                lastMove = now;
+            }
+            draw();
+            setTimeout(loop, 100);
+        }
+
+        // ============================================================
+        // 尺寸自适应
+        // ============================================================
+        function resizeCanvas() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+            const density = Math.max(12, Math.min(24, Math.floor(w / 50)));
+            cols = density;
+            rows = Math.floor(density * (h / w));
+            cellSize = Math.min(w / cols, h / rows) * 0.6;
+            cols = Math.floor(w / cellSize);
+            rows = Math.floor(h / cellSize);
+            init();
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // ============================================================
+        // 全屏按钮
+        // ============================================================
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
         });
+
+        // ============================================================
+        // 启动
+        // ============================================================
+        init();
+        requestAnimationFrame(loop);
     </script>
 </body>
 </html>
