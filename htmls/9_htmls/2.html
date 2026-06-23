@@ -471,9 +471,6 @@
   canvas.addEventListener('touchstart', (e) => e.preventDefault());
   canvas.addEventListener('touchmove', (e) => e.preventDefault());
 
-  document.body.style.cursor = 'none';
-  canvas.style.cursor = 'none';
-
   document.getElementById('fullscreenBtn').addEventListener('click', () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
