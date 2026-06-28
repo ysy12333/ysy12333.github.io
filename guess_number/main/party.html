@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字 - 多人游戏</title>
+    <style>
+        .s_title {
+            text-align: center;
+        }
+        .change {
+            text-align: center;
+        }
+        #start {
+            display: block;
+            margin: auto;
+            text-align: center;
+        }
+        .play {
+            display: none;
+        }
+        .range {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="setting" id="setting">
+        <h1 class="s_title">猜数字多人游戏</h1>
+        <div class="change">
+            <input type="radio" name="a" id="au" value="on" checked>
+            <label for="au">自动选择</label>
+
+            <input type="radio" name="a" id="ch" value="off">
+            <label for="ch">手动指定范围和数字</label>
+        </div>
+        <br>
+        <br>
+        <div class="range" id="range">
+            <input type="number" id="min" placeholder="输入最小值">
+            <input type="number" id="max" placeholder="输入最大值">
+            <input type="number" id="guess" placeholder="输入要猜的数字">
+        </div>
+        <br><br>
+        <button id="start">开始游戏</button>
+    </div>
+    <script>
+        const range = document.getElementById('range');
+        const auto = document.getElementById('au');
+        const change = document.getElementById('ch');
+        const start = document.getElementById('start');
+        const setting = document.getElementById('setting');
+        const play = document.getElementById('play');
+        const max = document.getElementById('max');
+        const min = document.getElementById('min');
+        const guess = document.getElementById('guess');
+        
+
+        function chan() {
+            const value = document.querySelector('input[name="a"]:checked').value;
+            if (value === 'on') {
+                range.style.display = 'none';
+            } else {
+                range.style.display = 'block';
+            }
+        }
+
+        document.querySelectorAll('input[name="a"]')
+            .forEach(radio => {
+                radio.addEventListener('change', chan);
+        });
+        
+        chan();
+        
+
+        min.addEventListener('input', function() {
+            min.value = min.value.replace(/[^0-9]/g, '');
+        });
+        max.addEventListener('input', function() {
+            max.value = max.value.replace(/[^0-9]/g, '');
+        });
+        guess.addEventListener('input', function() {
+            guess.value = guess.value.replace(/[^0-9]/g, '');
+        });
+
+        
+        start.addEventListener('click', function() {
+            const valuen = document.querySelector('input[name="a"]:checked').value;
+            const max_num = parseInt(max.value);
+            const min_num = parseInt(min.value);
+            const guess_num = parseInt(guess.value);
+            
+            if (valuen === 'off') {
+                if (isNaN(min_num) || isNaN(max_num)) {
+                    alert('请输入数字');
+                    return;
+                }
+                if (min_num === 0 || max_num === 0 ) {
+                    alert('请不要输入0');
+                    return;
+                }
+                if (min_num >= max_num) {
+                    alert('最大值必须大于最小值');
+                    return;
+                }
+                if (guess_num > max_num || guess_num < min_num) {
+                    alert('要猜的数字必须在最大值与最小值之间');
+                    return;
+                }
+                location.href = `play/play_change.html?max=${max_num}&min=${min_num}&num=${guess_num}`;
+
+                
+            } else {
+                location.href = 'play/play_auto.html';
+            }
+            
+        });
+    </script>
+</body>
+</html>

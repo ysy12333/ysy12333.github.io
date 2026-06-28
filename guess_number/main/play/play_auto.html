@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字 - 自动选择</title>
+    <style>
+        .s_title,.range {
+            text-align: center;
+        }
+        .guess,#check {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="setting" id="setting">
+        <h1 class="s_title">猜数字单人游戏</h1>
+    </div>
+    <div id="play" class="play">
+        <h2 class="s_title">开始猜数字吧！</h2>
+        <input type="number" id="guess" class="guess" placeholder="请输入要猜的数字">
+        <br><br>
+        <button id="check">猜</button>
+        <p id="show"></p>
+    </div>
+    <script>
+        const guess = document.getElementById('guess');
+        const check = document.getElementById('check');
+        const show = document.getElementById('show');
+
+        au_number = Math.floor(Math.random() * 100) + 1;
+        
+        guess.addEventListener('input', function() {
+            guess.value = guess.value.replace(/[^0-9]/g, '');
+        });
+
+        let guess_max = 100;
+        let guess_min = 1;
+        check.addEventListener('click', function() {
+            const guess_num = parseInt(guess.value);
+            if (guess_num > 100 || guess_num < 1) {
+                show.textContent = `请在1~100内猜`;
+                return;
+            }
+            if (guess_num > au_number) {
+                show.textContent = `猜的太大了，${guess_min}-${guess_num}`;
+                guess_max = guess_num;
+            };
+            if (guess_num < au_number) {
+                show.textContent = `猜的太小了，${guess_num}-${guess_max}`;
+                guess_min = guess_num;
+            };
+            if (guess_num === au_number) {
+                show.textContent = `猜中了！`;
+            };
+        });
+    </script>
+</body>
+</html>

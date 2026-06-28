@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字</title>
+    <style>
+        .s_title {
+            text-align: center;
+        }
+        .change {
+            text-align: center;
+        }
+        #start {
+            display: block;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="s_title">猜数字</h1>
+    <div class="change">
+        <input type="radio" name="a" id="au" value="on" checked>
+        <label for="au">单人游戏</label>
+
+        <input type="radio" name="a" id="ch" value="off">
+        <label for="ch">多人游戏</label>
+    </div>
+    <br>
+    <button id="start">OK</button>
+    <script>
+        const auto = document.getElementById('au');
+        const change = document.getElementById('ch');
+        const start = document.getElementById('start');
+        
+
+        start.addEventListener('click', function() {
+            const valuen = document.querySelector('input[name="a"]:checked').value;
+            if (valuen === 'off') {
+                location.href = 'main/party.html';
+            } else {
+                location.href = 'main/solo.html';
+            };
+        });
+    </script>
+</body>
+</html>
