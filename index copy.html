@@ -31,13 +31,7 @@
         }
         
         .header {
-            background: rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: inset 0 -12px 24px rgba(0, 0, 0, 0.08), inset 0 12px 28px rgba(255, 255, 255, 0.7), 0 15px 40px rgba(0, 0, 0, 0.25);
-            width: 100%;
-            position: fixed;
+            background: #2c3e50;
             color: white;
             padding: 15px 20px;
             display: flex;
@@ -64,8 +58,7 @@
             padding: 10px 40px 10px 15px;
             border: none;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.9);
             color: #333;
             font-size: 0.95rem;
             outline: none;
@@ -73,8 +66,7 @@
         }
         
         .search-box:focus {
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: white;
             box-shadow: 0 0 0 2px rgba(76, 123, 236, 0.3);
         }
         
@@ -96,7 +88,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             margin-top: 5px;
@@ -318,16 +310,12 @@
         .source {
             font-size: 0.8em;
         }
-
-        .headtitle {
-            color: #333;
-        }
     </style>
 </head>
 <body>
     <div class="file-manager">
         <div class="header">
-            <h1 class="headtitle">ysy12333的主页</h1>
+            <h1>ysy12333的主页</h1>
             <div class="search-container">
                 <input type="text" class="search-box" placeholder="搜索项目...">
                 <div class="search-icon">
@@ -338,7 +326,7 @@
                 <div class="search-results" id="searchResults"></div>
             </div>
         </div>
-        <div id="brr"></div>
+        
         <div class="main-content">
             <div class="file-list" id="originalList1">
                 <a href="/cysz/" class="file-item" data-name="朝阳市第四中学官网" data-desc="自制学校官网" target="_blank">
@@ -631,20 +619,6 @@
             
             // 初始隐藏搜索结果
             searchResults.style.display = 'none';
-        });
-
-        const brr = document.getElementById('brr');
-        if (window.innerWidth >= 600) {
-            brr.innerHTML = `<br><br><br>`;
-        } else if (window.innerWidth < 600) {
-            brr.innerHTML = `<br><br><br><br><br>`;
-        }
-        window.addEventListener('resize', function b() {
-            if (window.innerWidth >= 600) {
-                brr.innerHTML = `<br><br><br>`;
-            } else if (window.innerWidth < 600) {
-                brr.innerHTML = `<br><br><br><br><br>`;
-            }
         });
     </script>
 </body>
