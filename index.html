@@ -519,6 +519,8 @@
             </div>
             <p>最后更新：2026年08月24日，星期一</p>
             <!--<p>祝大家新年快乐！🎉🎉</p>-->
+            <br>
+            <p id="happy"></p>
         </div>
     </div>
 
@@ -657,6 +659,20 @@
                 brr.innerHTML = `<br><br><br><br><br>`;
             }
         });
+
+        //到时间切换快乐
+        
+        function happying() {
+            const h_html = document.getElementById('happy');
+            const happy = new Date();
+            let h_month = happy.getMonth() +1;
+            let h_day = happy.getDate();
+            if (h_month === 9 && h_day === 10) {
+                h_html.textContent = '祝全体教师教师节快乐！';
+            }
+        };
+        happying();
+        setInterval(happying, 1000);
     </script>
 </body>
 </html>
