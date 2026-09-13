@@ -22,8 +22,18 @@
         
         .time {
             font-size: 24vw;
-            color: white;
+            animation: colorswap 60s linear infinite;
             text-align: center;
+            text-shadow: 0 0 0.2em currentColor;
+        }
+        @keyframes colorswap {
+            0%      { color: oklch(70% 0.13 0); }
+            16.66%  { color: oklch(70% 0.13 60); }
+            33.33%  { color: oklch(70% 0.13 140); }
+            50%     { color: oklch(70% 0.13 195); }
+            66.66%  { color: oklch(70% 0.13 255); }
+            83.33%  { color: oklch(70% 0.13 310); }
+            100%    { color: oklch(70% 0.13 0); }
         }
 
         @keyframes shine {
@@ -48,7 +58,7 @@
             background-size: 200%, auto;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: shine 10s linear infinite reverse;
+            animation: shine 30s linear infinite reverse;
         }
 
         .button {
