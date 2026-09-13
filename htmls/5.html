@@ -76,6 +76,14 @@
             justify-content: center;
             height: 100vh;
         }
+
+        @font-face {
+            font-family: "SourceHanSansCN-Regular";
+            src: url(resources/show1.woff2) format('woff2');
+        }
+        .a .time {
+            font-family: 'SourceHanSansCN-Regular', sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -107,12 +115,7 @@
             let e = date3.getDate();
             
             ddate.textContent = `${c}年${d}月${e}日`;
-        }
-        update_ddate();
-        setInterval(update_ddate, 1000);
 
-
-        function update_week() {
             const week = document.getElementById("week");
             const date2 = new Date();
             let a = date2.getDay();
@@ -135,8 +138,8 @@
             week.textContent = `星期${b}`;
             
         };
-        update_week();
-        setInterval(update_week, 1000);
+        update_ddate();
+        setInterval(update_ddate, 1000);
 
 
         const button = document.getElementById("button");
