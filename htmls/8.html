@@ -127,12 +127,7 @@
             let e = date3.getDate();
             
             ddate.textContent = `日期：${c}年${d}月${e}日`;
-        }
-        update_ddate();
-        setInterval(update_ddate, 1000);
 
-
-        function update_week() {
             const week = document.getElementById("week");
             const date2 = new Date();
             let a = date2.getDay();
@@ -155,32 +150,29 @@
             week.textContent = `星期${b}`;
             
         };
-        update_week();
-        setInterval(update_week, 1000);
+        update_ddate();
+        setInterval(update_ddate, 1000);
 
 
 
-        dayjs.extend(window.dayjs_plugin_duration);
-        
-        const target = dayjs('2028-06-07 09:00:00');
+                // 北京时间 2028-06-07 09:00 = UTC 2028-06-07 01:00
+        const target = Date.UTC(2028, 5, 7, 1, 0, 0);
         const pad = (n) => String(n).padStart(2, '0');
-        
         function update() {
-            const diff = target.diff(dayjs());
+            const diff = target - Date.now();
             if (diff <= 0) {
                 document.getElementById('countdown').innerText = '🎓 高考开始，加油！';
                 return;
             }
-              
-            const dur = dayjs.duration(diff);
-            const days = Math.floor(dur.asDays());
-            const hours = dur.hours();
-            const minutes = dur.minutes();
-            const seconds = dur.seconds();
-
-            document.getElementById('countdown').innerText = 
+            const totalSec = Math.ceil(diff / 1000); // 顶层向上取整，视觉更跟手
+            const days    = Math.floor(totalSec / 86400);
+            const hours   = Math.floor((totalSec % 86400) / 3600);
+            const minutes = Math.floor((totalSec % 3600) / 60);
+            const seconds = totalSec % 60;
+        
+            document.getElementById('countdown').innerText =
                 `距离高考还剩: ${days}天 ${pad(hours)}小时 ${pad(minutes)}分 ${pad(seconds)}秒`;
-            }
+        }
             
             update();
             setInterval(update, 100);
