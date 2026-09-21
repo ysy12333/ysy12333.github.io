@@ -141,6 +141,11 @@
         update_ddate();
         setInterval(update_ddate, 1000);
 
+        function keep_active() {
+            navigator.wakeLock?.request('screen').catch(() => {});
+        };
+        keep_active();
+        setInterval(keep_active, 10000);
 
         const button = document.getElementById("button");
         const body = document.body;
