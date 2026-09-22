@@ -20,7 +20,7 @@
     </div>
     <div id="play" class="play">
         <h2 class="s_title">开始猜数字吧！</h2>
-        <input type="number" id="guess" class="guess" placeholder="请输入要猜的数字">
+        <input type="number" id="guess" class="guess">
         <br><br>
         <button id="check">猜</button>
         <p id="show"></p>
@@ -45,6 +45,7 @@
 
         let guess_max = max;
         let guess_min = min;
+        guess.placeholder = `请在${min}~${max}内猜`;
         check.addEventListener('click', function() {
             const guess_num = parseInt(guess.value);
             if (guess_num > max || guess_num < min) {
