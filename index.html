@@ -601,13 +601,13 @@
                     <span class="source">访问源代码</span>
                 </a>
             </div>
-            <p>最后更新：2026年09月10日，星期四</p>
+            <p>最后更新：2026年09月26日，星期六</p>
             <!--<p>祝大家新年快乐！🎉🎉</p>-->
             <br>
             <p id="happy"></p>
         </div>
     </div>
-
+    <script src="lunar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchBox = document.querySelector('.search-box');
@@ -749,12 +749,16 @@
         function happying() {
             const h_html = document.getElementById('happy');
             const happy = new Date();
+            const lunar = Lunar.fromDate(new Date());
             let h_month = happy.getMonth() +1;
             let h_day = happy.getDate();
             if (h_month === 9 && h_day === 10) {
                 h_html.textContent = '祝全体教师教师节快乐！';
-            }
-            else {
+            }else if (lunar.getMonthInChinese() === '八' && lunar.getDayInChinese() === '十五') {
+                h_html.textContent = '祝大家中秋节快乐！';
+            }else if (h_month === 10 && h_day >= 1 && h_day <= 7) {
+                h_html.textContent = '祝大家国庆节快乐！';
+            } else {
                 h_html.textContent = '';
             }
         };
