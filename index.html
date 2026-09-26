@@ -58,6 +58,7 @@
             font-size: 1.5rem;
             font-weight: 600;
             margin-right: auto;
+            margin-left: 48px;
         }
         
         .search-container {
@@ -265,6 +266,7 @@
                 font-size: 1.3rem;
                 margin-right: 0;
                 width: 100%;
+                margin-left: 0;
             }
             
             .search-container {
@@ -333,11 +335,93 @@
         .headtitle {
             color: #333;
         }
+        .menu_body {
+            z-index: 2;
+            position: absolute;
+            width: 80vw;
+            height: 100vh;
+            background: #fff;
+            opacity: 0;
+            visibility: hidden;
+            padding-left: 10vw;
+
+            transform: translateX(-120%);
+            transition: all 0.4s cubic-bezier(0.34, 1.33, 0.64, 1);
+        }
+        .menu_body.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-10%);
+        }
+        .svg1 {
+            position: absolute;
+            stroke: #000;
+            left: 5px;
+            top: 5px;
+            
+        }
+        #top_menu {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .a {
+            color: #333;
+            text-decoration: none;
+        }
+        .a:visited {
+            color: #333;
+        }
+        .a:hover {
+            color: #333;
+        }
+        .zhezhao {
+            z-index: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            visibility: hidden;
+        }
+        .zhezhao.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        @media (min-width: 601px) {
+            .menu_body {
+                width: 40vw;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="file-manager">
         <div class="header">
+            <div class="zhezhao" id="zhezhao"></div>
+            <div id="top_menu">
+                <div id="svg1">
+                    <svg class="svg1" width="48" height="48" stroke="currentColor" stroke-linecap="round" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </div>
+                <div class="menu_body" id="menu_body">
+                    <div style="color: #000; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; margin: 20px 20px 30px 0;">
+                            <h3 style="flex: 1;text-align: center;">菜单</h3>
+                            <div id="svg2" style="flex-shrink: 0;">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12m0-12L6 18"/></svg>
+                            </div>
+                        </div>
+
+                        <div style="margin: 10px;display: flex;flex-direction: column;gap: 15px;">
+                            <a class="a" href="old.html">旧样式主页</a>
+                            <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/">访问源代码</a>
+                            <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/issues">反馈-需要github账号</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <h1 class="headtitle">ysy12333的主页</h1>
             <div class="search-container">
                 <input type="text" class="search-box" placeholder="搜索项目...">
@@ -676,6 +760,31 @@
         };
         happying();
         setInterval(happying, 1000);
+
+
+        const svg1 = document.getElementById('svg1');
+        const svg2 = document.getElementById('svg2');
+        const zhezhao = document.getElementById('zhezhao');
+        const menu_body = document.getElementById('menu_body')
+        //按钮开启菜单栏+遮罩
+        svg1.addEventListener('click', (event) => {
+            menu_body.classList.toggle('show');
+            zhezhao.classList.toggle('show');
+            event.stopPropagation();
+        });
+        //按钮关闭菜单栏+遮罩
+        
+        svg2.addEventListener('click', (event) => {
+            menu_body.classList.remove('show');
+            zhezhao.classList.remove('show');
+            event.stopPropagation();
+        });
+        //屏幕外关闭菜单栏+遮罩
+        
+        zhezhao.addEventListener('click', (event) => {
+            menu_body.classList.remove('show');
+            zhezhao.classList.remove('show');
+        });
     </script>
 </body>
 </html>
