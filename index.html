@@ -345,6 +345,8 @@
             visibility: hidden;
             padding-left: 10vw;
 
+            overflow-y: auto;
+
             transform: translateX(-120%);
             transition: all 0.4s cubic-bezier(0.34, 1.33, 0.64, 1);
         }
@@ -393,7 +395,13 @@
         @media (min-width: 601px) {
             .menu_body {
                 width: 40vw;
+                padding-left:5vw;
             }
+        }
+
+        .menuhappy {
+            text-align: center;
+            margin: 50px 0 15px 0;
         }
     </style>
 </head>
@@ -419,6 +427,7 @@
                             <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/">访问源代码</a>
                             <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/issues">反馈-需要github账号</a>
                         </div>
+                        <p id="happy" class="menuhappy"></p>
                     </div>
                 </div>
             </div>
@@ -601,7 +610,7 @@
                     <span class="source">访问源代码</span>
                 </a>
             </div>
-            <p>最后更新：2026年09月27日，星期日</p>
+            <p>最后更新：2026年10月01日，星期四</p>
             <!--<p>祝大家新年快乐！🎉🎉</p>-->
             <br>
             <p id="happy"></p>
