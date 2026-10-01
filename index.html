@@ -399,7 +399,12 @@
             }
         }
 
-        .menuhappy {
+        .happy {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .happy2 {
             text-align: center;
             margin: 50px 0 15px 0;
         }
@@ -427,7 +432,7 @@
                             <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/">访问源代码</a>
                             <a class="a" href="https://github.com/ysy12333/ysy12333.github.io/issues">反馈-需要github账号</a>
                         </div>
-                        <p id="happy" class="menuhappy"></p>
+                        <p class="happy happy2"></p>
                     </div>
                 </div>
             </div>
@@ -613,7 +618,7 @@
             <p>最后更新：2026年10月01日，星期四</p>
             <!--<p>祝大家新年快乐！🎉🎉</p>-->
             <br>
-            <p id="happy"></p>
+            <p class="happy happy1"></p>
         </div>
     </div>
     <script src="lunar.js"></script>
@@ -756,20 +761,34 @@
         //到时间切换快乐
         
         function happying() {
-            const h_html = document.getElementById('happy');
+            const h_html = document.querySelectorAll('.happy');
+            let textt = '';
             const happy = new Date();
             const lunar = Lunar.fromDate(new Date());
             let h_month = happy.getMonth() +1;
             let h_day = happy.getDate();
+            let l_day = lunar.getDay();
+            const happy_chuxi = new Date(happy);
+            happy_chuxi.setDate(happy_chuxi.getDate()+1);
+            const lunar2 = Lunar.fromDate(happy_chuxi);
             if (h_month === 9 && h_day === 10) {
-                h_html.textContent = '祝全体教师教师节快乐！';
-            }else if (lunar.getMonthInChinese() === '八' && lunar.getDayInChinese() === '十五') {
-                h_html.textContent = '祝大家中秋节快乐！';
-            }else if (h_month === 10 && h_day >= 1 && h_day <= 7) {
-                h_html.textContent = '祝大家国庆节快乐！';
+                textt = '祝全体教师教师节快乐！';
+            } else if (lunar.getMonthInChinese() === '八' && lunar.getDayInChinese() === '十五') {
+                textt = '祝大家中秋节快乐！';
+            } else if (h_month === 10 && h_day >= 1 && h_day <= 7) {
+                textt = '祝大家国庆节快乐！';
+            } else if (lunar2.getMonthInChinese() === '正' && lunar2.getDayInChinese() === '初一') {
+                textt = '祝大家除夕快乐！';
+            } else if (lunar.getMonthInChinese() === '正' && l_day >= 1 && l_day <= 14) {
+                textt = '祝大家新年快乐！';
+            } else if (lunar.getMonthInChinese() === '正' && lunar.getDayInChinese() === '十五') {
+                textt = '祝大家新年快乐！<br>祝大家元宵节快乐！';
             } else {
-                h_html.textContent = '';
+                textt = '';
             }
+            h_html.forEach(el => {
+                el.innerHTML = textt;
+            });
         };
         happying();
         setInterval(happying, 1000);
