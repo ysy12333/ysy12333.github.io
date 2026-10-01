@@ -759,10 +759,9 @@
         });
 
         //到时间切换快乐
-        
+        const h_html = document.querySelectorAll('.happy');
         function happying() {
-            const h_html = document.querySelectorAll('.happy');
-            let textt = '';
+            const wish = [];
             const happy = new Date();
             const lunar = Lunar.fromDate(new Date());
             let h_month = happy.getMonth() +1;
@@ -771,27 +770,29 @@
             const happy_chuxi = new Date(happy);
             happy_chuxi.setDate(happy_chuxi.getDate()+1);
             const lunar2 = Lunar.fromDate(happy_chuxi);
-            if (h_month === 9 && h_day === 10) {
-                textt = '祝全体教师教师节快乐！';
-            } else if (lunar.getMonthInChinese() === '八' && lunar.getDayInChinese() === '十五') {
-                textt = '祝大家中秋节快乐！';
-            } else if (h_month === 10 && h_day >= 1 && h_day <= 7) {
-                textt = '祝大家国庆节快乐！';
-            } else if (lunar2.getMonthInChinese() === '正' && lunar2.getDayInChinese() === '初一') {
-                textt = '祝大家除夕快乐！';
-            } else if (lunar.getMonthInChinese() === '正' && l_day >= 1 && l_day <= 14) {
-                textt = '祝大家新年快乐！';
-            } else if (lunar.getMonthInChinese() === '正' && lunar.getDayInChinese() === '十五') {
-                textt = '祝大家新年快乐！<br>祝大家元宵节快乐！';
+
+            if (h_month === 10 && h_day >= 1 && h_day <= 7) {
+                wish.push('祝大家国庆节快乐！');
+            } if (lunar.getMonthInChinese() === '八' && lunar.getDayInChinese() === '十五') {
+                wish.push('祝大家中秋节快乐！');
+            } if (h_month === 9 && h_day === 10) {
+                wish.push('祝全体教师教师节快乐！');
+            } if (lunar2.getMonthInChinese() === '正' && lunar2.getDayInChinese() === '初一') {
+                wish.push('祝大家除夕快乐！');
+            } if (lunar.getMonthInChinese() === '正' && l_day >= 1 && l_day <= 15) {
+                wish.push('祝大家新年快乐！');
+            } if (lunar.getMonthInChinese() === '正' && lunar.getDayInChinese() === '十五') {
+                wish.push('祝大家元宵节快乐！');
             } else {
-                textt = '';
+                wish.push('');
             }
+            const textt = wish.join('<br>');
             h_html.forEach(el => {
                 el.innerHTML = textt;
             });
         };
         happying();
-        setInterval(happying, 1000);
+        setInterval(happying, 10000);
 
 
         const svg1 = document.getElementById('svg1');
