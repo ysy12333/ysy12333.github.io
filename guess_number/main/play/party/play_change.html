@@ -24,6 +24,8 @@
         <br><br>
         <button id="check">猜</button>
         <p id="show"></p>
+        <br>
+        <p id="countt"></p>
     </div>
     <script>
         const guess = document.getElementById('guess');
@@ -45,6 +47,8 @@
 
         let guess_max = max;
         let guess_min = min;
+        let count = 0;
+        const countt = document.getElementById("countt");
         guess.placeholder = `请在${min}~${max}内猜`;
         check.addEventListener('click', function() {
             const guess_num = parseInt(guess.value);
@@ -52,16 +56,22 @@
                 show.textContent = `请在${min}~${max}内猜`;
                 return;
             }
+            count += 1;
+            const p = document.createElement('p');
+            countt.appendChild(p);
             if (guess_num > num) {
                 show.textContent = `猜的太大了，${guess_min}-${guess_num}`;
                 guess_max = guess_num;
+                p.textContent = `第${count}人猜的是${guess_num},没猜对`;
             };
             if (guess_num < num) {
                 show.textContent = `猜的太小了，${guess_num}-${guess_max}`;
                 guess_min = guess_num;
+                p.textContent = `第${count}人猜的是${guess_num},没猜对`;
             };
             if (guess_num === num) {
                 show.textContent = `猜中了！`;
+                p.textContent = `第${count}人猜的是${guess_num},猜对了`;
             };
         });
     </script>
