@@ -22,7 +22,6 @@
         
         .time {
             font-size: 24vw;
-            animation: colorswap 60s linear infinite;
             text-align: center;
             text-shadow: 0 0 0.2em currentColor;
         }
@@ -58,7 +57,6 @@
             background-size: 200%, auto;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: shine 30s linear infinite reverse;
         }
 
         .button {
@@ -90,7 +88,7 @@
 <body>
     <div class="b">
         <div id="time" class="time">00:00:00</div>
-        <div class="aaa">
+        <div class="aaa" id="aaa">
             <div id="ddate" class="a">0000年00月00日</div>
             <div id="week" class="a">星期X</div>
         </div>
@@ -99,10 +97,18 @@
     
         
     <script>
+        let lastSec = -1;
+        let hue = 0;
+        let pos = 0;
+        const time = document.getElementById("time");
+        const aaa = document.getElementById("aaa");
+
         function update_time() {
-            const time = document.getElementById("time");
             const date1 = new Date();
             time.textContent = date1.toLocaleTimeString();
+
+            hue = (hue + 1.2) % 360;    //(hue + a) ，a = 36 ÷ 一个循环需要的秒数
+            time.style.color = `oklch(70% 0.13 ${hue})`;
         };
         update_time();
         setInterval(update_time, 100);
@@ -137,7 +143,10 @@
                 b = "六";
             };
             week.textContent = `星期${b}`;
-            
+
+            pos += 200 / 60;          // 第一个数值：走一圈总距离（默认100，容器长度的100%），第二个数值：多少秒一个循环
+            if (pos >= 200) pos = 0;   // 到头回到起点
+            aaa.style.backgroundPosition = `${pos}% center`;
         };
         update_ddate();
         setInterval(update_ddate, 1000);
