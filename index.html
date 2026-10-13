@@ -621,7 +621,6 @@
             <p class="happy happy1"></p>
         </div>
     </div>
-    <script src="lunar.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchBox = document.querySelector('.search-box');
@@ -758,6 +757,32 @@
             }
         });
 
+        const svg1 = document.getElementById('svg1');
+        const svg2 = document.getElementById('svg2');
+        const zhezhao = document.getElementById('zhezhao');
+        const menu_body = document.getElementById('menu_body')
+        //按钮开启菜单栏+遮罩
+        svg1.addEventListener('click', (event) => {
+            menu_body.classList.toggle('show');
+            zhezhao.classList.toggle('show');
+            event.stopPropagation();
+        });
+        //按钮关闭菜单栏+遮罩
+        
+        svg2.addEventListener('click', (event) => {
+            menu_body.classList.remove('show');
+            zhezhao.classList.remove('show');
+            event.stopPropagation();
+        });
+        //屏幕外关闭菜单栏+遮罩
+        
+        zhezhao.addEventListener('click', (event) => {
+            menu_body.classList.remove('show');
+            zhezhao.classList.remove('show');
+        });
+    </script>
+    <script src="lunar.js"></script>
+    <script>
         //到时间切换快乐
         const h_html = document.querySelectorAll('.happy');
         function happying() {
@@ -793,31 +818,6 @@
         };
         happying();
         setInterval(happying, 10000);
-
-
-        const svg1 = document.getElementById('svg1');
-        const svg2 = document.getElementById('svg2');
-        const zhezhao = document.getElementById('zhezhao');
-        const menu_body = document.getElementById('menu_body')
-        //按钮开启菜单栏+遮罩
-        svg1.addEventListener('click', (event) => {
-            menu_body.classList.toggle('show');
-            zhezhao.classList.toggle('show');
-            event.stopPropagation();
-        });
-        //按钮关闭菜单栏+遮罩
-        
-        svg2.addEventListener('click', (event) => {
-            menu_body.classList.remove('show');
-            zhezhao.classList.remove('show');
-            event.stopPropagation();
-        });
-        //屏幕外关闭菜单栏+遮罩
-        
-        zhezhao.addEventListener('click', (event) => {
-            menu_body.classList.remove('show');
-            zhezhao.classList.remove('show');
-        });
     </script>
 </body>
 </html>
