@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十进制二进制互相转换</title>
+    <style>
+        .body {
+            display: flex;
+            flex-direction: column;
+            padding: 5px;
+            background-color: #eeeeee;
+            border-radius: 0.6rem;
+            box-shadow: 4px 4px 6px rgba(0, 0, 0,0.2);
+        }
+
+        input[name="a"] {
+            display: none;
+        }
+        .name {
+            display: block;
+            padding: 5px;
+            margin: 3px;
+        }
+        input[name="a"]:checked + .name {
+            background: linear-gradient(to right, #acacac 0%, #acacac 50%, #eee 100%);
+        }
+        input[name="a"] + .name {
+            background-color: #fff;
+            border-radius: 0.3rem;
+        }
+
+        .input {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            margin: 5px;
+            width: 80dvw;
+        }
+        #cc {
+            outline: none;
+            border: none;
+            margin: 15px 0 5px 0;
+            width: 100%;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #cc:focus {
+            background-color: rgba(0, 0, 0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0,0.15);
+        }
+        .underline {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            width: 100%;
+            background-color: #333;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        #cc:focus ~ .underline {
+            transform: scaleX(1);
+        }
+        .input label {
+            position: absolute;
+            pointer-events: none;
+            bottom: 1px;
+            transition: opacity 0.3s ease;
+        }
+        #cc:focus ~  label, #cc:valid ~ label {
+            opacity: 0;
+        }
+        #cc:valid {
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.05);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="body">
+        <label class="radio">
+            <input type="radio" name="a" id="aa" value="aa" checked>
+            <span class="name">二进制转十进制</span>
+        </label>
+        <label class="radio">
+            <input type="radio" name="a" id="ab" value="ab">
+            <span class="name">十进制转二进制</span>
+        </label>
+    </div>
+    <div class="input">
+        <input type="text" id="cc" required>
+        <label for="cc">点击输入数字</label>
+        <div class="underline"></div>
+    </div>
+    
+    <div id="output">
+
+    </div>
+    <script>
+        const aa = document.getElementById('aa');
+        const ab = document.getElementById('ab');
+        const cc = document.querySelector('#cc');
+        const output = document.querySelector('#output');
+
+
+        let resulta = '';
+        let c = [];
+
+        function BinToNum(a) {
+            output.innerHTML = "";
+            let arr = a.split("").map(Number);
+            let b = arr.length;
+            resulta = null;
+            for (let i = 0; i<b; i++) {
+                let ch = arr[i];
+                resulta += ch * 2 ** (b-i-1);
+                output.insertAdjacentHTML('beforeend', `<p>${ch} * 2^(${b-i-1}) +</p>`);
+            };
+            if (a != '') {
+                output.insertAdjacentHTML('beforeend', `<p>= ${resulta} </p>`);
+            }
+            
+        };
+        
+        function NumToBin(a) {
+            output.innerHTML = "";
+            let n = Number(a.trim());
+            c = [];
+            while (n > 0) {
+                let e = n % 2;
+                c.push(n % 2);
+                let d = Math.floor(n / 2);
+                output.insertAdjacentHTML('beforeend', `<p>${n} ÷ 2 = ${d}......${e}</p>`);
+                n = d;
+            };
+            c.reverse();
+            if (a != '') {
+                output.insertAdjacentHTML('beforeend', `<p>= ${c.join('')} </p>`);
+            }
+            
+        };
+
+        cc.addEventListener('input', (event) => {
+            const valuen = document.querySelector('input[name="a"]:checked').value;
+            if (valuen === 'aa') {
+                cc.value = cc.value.replace(/[^01]/g, '');
+                const ccc = cc.value;
+                BinToNum(ccc);
+            } else {
+                cc.value = cc.value.replace(/[^0123456789]/g, '');
+                const ccc = cc.value;
+                NumToBin(ccc);
+            };
+        });
+        const bodys = document.querySelectorAll('input[name="a"]');
+        bodys.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const valuen = document.querySelector('input[name="a"]:checked').value;
+                if (valuen === 'aa') {
+                    cc.value = c.join('');
+                    BinToNum(cc.value);
+                } else {
+                    cc.value = resulta;
+                    NumToBin(cc.value);
+                };
+            });
+        })
+        
+
+        
+    </script>
+</body>
+</html>
