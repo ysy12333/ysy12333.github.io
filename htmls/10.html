@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>十进制二进制互相转换</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            overflow: hidden;
+            margin: 0;
+        }
         .body {
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             padding: 5px;
@@ -31,6 +39,7 @@
         }
 
         .input {
+            flex-shrink: 0;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -79,6 +88,17 @@
             background-color: rgba(0, 0, 0, 0.05);
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
         }
+        #output {
+            flex: 1;
+            min-height: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 5px;
+        }
+        #output p {
+            width: max-content;
+            white-space: nowarp;
+        }
     </style>
 </head>
 <body>
@@ -113,15 +133,20 @@
 
         function BinToNum(a) {
             output.innerHTML = "";
+            if (a === '') {
+                resulta = '';
+                return;
+            }
             let arr = a.split("").map(Number);
             let b = arr.length;
-            resulta = null;
+            resulta = 0n;
             for (let i = 0; i<b; i++) {
                 let ch = arr[i];
-                resulta += ch * 2 ** (b-i-1);
+                resulta += BigInt(ch) * 2n ** BigInt(b-i-1);
                 output.insertAdjacentHTML('beforeend', `<p>${ch} * 2^(${b-i-1}) +</p>`);
             };
             if (a != '') {
+                resulta = resulta.toString();
                 output.insertAdjacentHTML('beforeend', `<p>= ${resulta} </p>`);
             }
             
@@ -129,12 +154,12 @@
         
         function NumToBin(a) {
             output.innerHTML = "";
-            let n = Number(a.trim());
+            let n = BigInt(a.trim().replace(/^0+/, '') || '0');
             c = [];
-            while (n > 0) {
-                let e = n % 2;
-                c.push(n % 2);
-                let d = Math.floor(n / 2);
+            while (n > 0n) {
+                let e = n % 2n;
+                c.push(n % 2n);
+                let d = n / 2n;
                 output.insertAdjacentHTML('beforeend', `<p>${n} ÷ 2 = ${d}......${e}</p>`);
                 n = d;
             };
