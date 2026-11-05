@@ -95,6 +95,12 @@
             overflow-y: auto;
             margin: 5px;
         }
+        #result {
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 5px;
+            white-space: nowrap;
+        }
         #output p {
             width: max-content;
             white-space: nowrap;
@@ -117,13 +123,14 @@
         <label for="cc">点击输入数字</label>
         <div class="underline"></div>
     </div>
-    
+    <p id="result"></p>
     <div id="output">
 
     </div>
     <script>
         const aa = document.getElementById('aa');
         const ab = document.getElementById('ab');
+        const result = document.getElementById('result');
         const cc = document.querySelector('#cc');
         const output = document.querySelector('#output');
 
@@ -133,6 +140,7 @@
 
         function BinToNum(a) {
             output.innerHTML = "";
+            result.textContent = "";
             if (a === '') {
                 resulta = '';
                 return;
@@ -148,12 +156,14 @@
             if (a != '') {
                 resulta = resulta.toString();
                 output.insertAdjacentHTML('beforeend', `<p>= ${resulta} </p>`);
+                result.textContent = `= ${resulta}`;
             }
             
         };
         
         function NumToBin(a) {
             output.innerHTML = "";
+            result.textContent = "";
             let n = BigInt(a.trim().replace(/^0+/, '') || '0');
             c = [];
             while (n > 0n) {
@@ -166,6 +176,7 @@
             c.reverse();
             if (a != '') {
                 output.insertAdjacentHTML('beforeend', `<p>= ${c.join('')} </p>`);
+                result.textContent = `= ${c.join('')}`;
             }
             
         };
