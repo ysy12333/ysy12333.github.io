@@ -1,17 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <script>
-        fetch('https://api.visitorbadge.io/api/visitors?path=https://ysy12333.github.io/htmls/8.html', {
-            keepalive: true,  // 关键：页面关闭后请求继续
-            priority: 'high'  // 提高优先级
-        });
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高考倒计时</title>
-    <script src="js/dayjs.min.js"></script>
-    <script src="js/duration.js"></script>
     <style>
         html, body {
             background-color: black;
@@ -157,7 +149,7 @@
 
 
                 // 北京时间 2028-06-07 09:00 = UTC 2028-06-07 01:00
-        const target = Date.UTC(2028, 5, 7, 1, 0, 0);
+        const target = new Date('2028-06-07T09:00:00+08:00').getTime();
         const pad = (n) => String(n).padStart(2, '0');
         function update() {
             const diff = target - Date.now();
